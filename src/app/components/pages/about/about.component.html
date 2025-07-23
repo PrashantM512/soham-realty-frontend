@@ -1,0 +1,65 @@
+<div class="about-page">
+    <!-- Hero Section -->
+    <section class="hero-section">
+      <div class="container name-container">
+        <div class="hero-content">
+          <div class="agent-image-container">
+            <img [src]="agentInfo.image" 
+                 [alt]="agentInfo.name" 
+                 class="agent-image">
+            <div class="image-decoration"></div>
+          </div>
+          
+          <div class="agent-info">
+            <h1 class="agent-name">It's {{ agentInfo.name }}</h1>
+            <p class="agent-title">{{ agentInfo.title }}</p>
+            <p class="agent-description" [innerHTML]="agentInfo.description"></p>
+            
+            <a routerLink="/contact" class="contact-btn btn-gradient">
+              Contact Us
+            </a>
+            
+            <div class="contact-info">
+              <p class="contact-item">
+                <span class="label">Phone:</span> 
+                <a href="tel:{{ agentInfo.phone }}">{{ agentInfo.phone }}</a>
+              </p>
+              <p class="contact-item">
+                <span class="label">Email:</span> 
+                <a href="mailto:{{ agentInfo.email }}">{{ agentInfo.email }}</a>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  
+    <!-- Additional Info Section -->
+    <section class="additional-info">
+      <div class="container">
+        <div class="info-grid">
+          <!-- Specialties -->
+          <div class="info-card">
+            <h3>Specialties</h3>
+            <ul class="info-list">
+              <li *ngFor="let specialty of agentInfo.specialties">
+                <i class="fas fa-check"></i>
+                {{ specialty }}
+              </li>
+            </ul>
+          </div>
+  
+          <!-- Achievements -->
+          <div class="info-card">
+            <h3>Achievements</h3>
+            <ul class="info-list">
+              <li *ngFor="let achievement of agentInfo.achievements">
+                <i class="fas fa-trophy"></i>
+                {{ achievement }}
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>

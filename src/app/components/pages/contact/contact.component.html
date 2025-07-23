@@ -1,0 +1,84 @@
+<div class="site-wrapper">
+  <!-- Hero Image -->
+  <section class="hero-section">
+    <img src="https://bangaloreashram.org/wp-content/uploads/2019/10/V-M.jpg" alt="Modern Interior" class="hero-image">
+  </section>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <!-- Agent Card -->
+    <div class="agent-profile">
+      <div class="agent-avatar">
+        <img src="assets/Vishal_Bhaiya.png?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Vishal Dange"
+          class="agent-photo profile-image">
+      </div>
+      <div class="agent-info">
+        <div class="agent-name">Vishal Dange</div>
+        <div class="agent-title">Real Estate Agent & Art of Living Teacher</div>
+        <div class="agent-contact">
+          +91 9766046101 / 7498077010 | dangevishal02&#64;gmail.com
+        </div>
+      </div>
+    </div>
+    <div class="section-header">
+      <h2 class="section-title">
+        <i class="fas fa-envelope-circle-check contact-icon"></i>
+        Contact Us
+      </h2>
+    </div>
+    <!-- Success/Error Messages -->
+    <div *ngIf="submitSuccess" class="success-message">
+      ✅ Thank you! Your message has been sent successfully.
+    </div>
+    <div *ngIf="submitError" class="error-message">
+      ❌ {{ submitError }}
+    </div>
+
+    <!-- Contact Form -->
+    <form class="contact-form" [formGroup]="contactForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="name">Name *</label>
+        <input type="text" id="name" formControlName="name" placeholder="Your Name"
+          [class.error]="name?.invalid && name?.touched">
+        <div *ngIf="name?.invalid && name?.touched" class="field-error">
+          <span *ngIf="name?.errors?.['required']">Name is required</span>
+          <span *ngIf="name?.errors?.['minlength']">Name must be at least 2 characters</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email *</label>
+        <input type="email" id="email" formControlName="email" placeholder="Your Email"
+          [class.error]="email?.invalid && email?.touched">
+        <div *ngIf="email?.invalid && email?.touched" class="field-error">
+          <span *ngIf="email?.errors?.['required']">Email is required</span>
+          <span *ngIf="email?.errors?.['email']">Please enter a valid email</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="phone">Phone</label>
+        <input type="tel" id="phone" formControlName="phone" placeholder="Your Phone" maxlength="10" minlength="10"
+          [class.error]="phone?.invalid && phone?.touched">
+        <div *ngIf="phone?.invalid && phone?.touched" class="field-error">
+          <span *ngIf="phone?.errors?.['pattern']">Please enter a valid phone number</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="message">Message *</label>
+        <textarea id="message" formControlName="message" rows="6" placeholder="Your Message"
+          [class.error]="message?.invalid && message?.touched"></textarea>
+        <div *ngIf="message?.invalid && message?.touched" class="field-error">
+          <span *ngIf="message?.errors?.['required']">Message is required</span>
+          <span *ngIf="message?.errors?.['minlength']">Message must be at least 10 characters</span>
+        </div>
+      </div>
+
+      <button type="submit" class="submit-btn btn-gradient" [disabled]="contactForm.invalid || isSubmitting">
+        <span *ngIf="!isSubmitting">Submit</span>
+        <span *ngIf="isSubmitting">Sending...</span>
+      </button>
+    </form>
+  </main>
+</div>

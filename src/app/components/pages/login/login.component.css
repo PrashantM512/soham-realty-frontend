@@ -1,0 +1,181 @@
+/* Shared styles for both login and register components */
+.auth-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin-top: 3%;
+    padding: 20px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  }
+  
+  .auth-form {
+    background: white;
+    padding: 30px;
+    border-radius: 7px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 350px;
+    border-top: 4px solid #0066ff;
+  }
+  
+  .auth-title {
+    text-align: center;
+    color: #374151;
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 24px;
+    margin-top: 0;
+  }
+  
+  .form-group {
+    margin-bottom: 18px;
+  }
+  
+  .form-label {
+    display: block;
+    color: #374151;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 8px;
+  }
+  
+  .form-input {
+    width: 100%;
+    padding: 10px 14px;
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: all 0.2s ease;
+    background: #ffffff;
+    box-sizing: border-box;
+  }
+  
+  .form-input:focus {
+    outline: none;
+    border-color: #0066ff;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+  }
+  
+  .form-input::placeholder {
+    color: #9ca3af;
+  }
+  
+  .form-input.error {
+    border-color: #ef4444;
+  }
+  
+  .form-input.error:focus {
+    border-color: #ef4444;
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+  }
+  
+  .error-message {
+    color: #ef4444;
+    font-size: 12px;
+    margin-top: 6px;
+  }
+  
+  .form-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 20px;
+  }
+  
+  .submit-btn {
+    width: 100%;
+    padding: 12px 20px;
+    background: #0066ff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .submit-btn:hover:not(:disabled) {
+    background: #5855eb;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
+  }
+  
+  .submit-btn:active:not(:disabled) {
+    transform: translateY(0);
+  }
+  
+  .submit-btn:disabled {
+    background: #0066ff;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+  
+  .forgot-password-btn {
+    background: none;
+    border: none;
+    color: #0066ff;
+    font-size: 14px;
+    cursor: pointer;
+    text-align: right;
+    transition: color 0.2s ease;
+    padding: 0;
+  }
+  
+  .forgot-password-btn:hover {
+    color: #0066ff;
+    text-decoration: underline;
+  }
+  
+  .register-btn {
+    background: #0066ff;
+  }
+  
+  .register-btn:hover:not(:disabled) {
+    background: #0066ff;
+  }
+  
+  /* Responsive design */
+  @media (max-width: 480px) {
+    .auth-container {
+      padding: 16px;
+      margin-top: -5%;
+    }
+    
+    .auth-form {
+      padding: 24px;
+      box-shadow: 0 20px 40px rgb(0 0 0 / 32%);
+    }
+    
+    .auth-title {
+      font-size: 20px;
+      margin-bottom: 24px;
+    }
+  }
+  /* login.component.css - Add these styles to your existing CSS */
+
+/* Error banner styles */
+.error-banner {
+  background-color: #f8d7da;
+  color: #721c24;
+  padding: 12px 20px;
+  border-radius: 4px;
+  border: 1px solid #f5c6cb;
+  margin-bottom: 20px;
+  font-size: 14px;
+  line-height: 1.5;
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

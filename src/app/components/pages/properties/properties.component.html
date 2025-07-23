@@ -1,0 +1,184 @@
+<!-- properties.component.html - PAGINATION SECTION FIXED -->
+<div class="properties-page">
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="container name-container">
+      <h1 class="page-title">Available Properties</h1>
+      <p class="page-subtitle">Explore our curated selection of properties tailored to your needs.</p>
+    </div>
+  </div>
+
+  <!-- Search and Filters Section -->
+  <div class="search-filters-section">
+    <div class="container">
+      <!-- Search Bar with Submit Button -->
+      <div class="search-container">
+        <form class="search-box" (submit)="onSearch(); $event.preventDefault()">
+          <i class="fas fa-search search-icon"></i>
+          <input type="text" [(ngModel)]="searchQuery" (keyup.enter)="onSearch()"
+            placeholder="Search here" class="search-input" name="searchQuery">
+          <button type="submit" class="search-button search-btn page-btn btn-gradient" style="color: white;"
+            aria-label="Search properties">
+
+            <span class="button-text">Search</span>
+          </button>
+        </form>
+      </div>
+
+
+
+
+
+      <!-- Filters Row -->
+      <div class="filters-row">
+        <!-- Price Range Filter -->
+        <div class="filter-dropdown" [class.active]="dropdownStates.priceRange">
+          <button class="filter-button" (click)="toggleDropdown('priceRange')">
+            <span>{{ getFilterLabel('priceRange') }}</span>
+            <i class="fas fa-chevron-down"></i>
+          </button>
+          <div class="dropdown-menu" *ngIf="dropdownStates.priceRange">
+            <button class="dropdown-item" (click)="setFilter('priceRange', '')">Any Price</button>
+            <button class="dropdown-item" *ngFor="let range of priceRanges"
+              (click)="setFilter('priceRange', range.value)" [class.active]="filters.priceRange === range.value">
+              {{ range.label }}
+            </button>
+          </div>
+        </div>
+
+        <!-- Location Filter -->
+        <div class="filter-dropdown" [class.active]="dropdownStates.location">
+          <button class="filter-button" (click)="toggleDropdown('location')">
+            <span>{{ getFilterLabel('location') }}</span>
+            <i class="fas fa-chevron-down"></i>
+          </button>
+          <div class="dropdown-menu" *ngIf="dropdownStates.location">
+            <button class="dropdown-item" *ngFor="let loc of locations" (click)="setFilter('location', loc)"
+              [class.active]="filters.location === loc">
+              {{ loc }}
+            </button>
+          </div>
+        </div>
+
+        <!-- Property Type Filter -->
+        <div class="filter-dropdown" [class.active]="dropdownStates.propertyType">
+          <button class="filter-button" (click)="toggleDropdown('propertyType')">
+            <span>{{ getFilterLabel('propertyType') }}</span>
+            <i class="fas fa-chevron-down"></i>
+          </button>
+          <div class="dropdown-menu" *ngIf="dropdownStates.propertyType">
+            <button class="dropdown-item" *ngFor="let type of propertyTypes" (click)="setFilter('propertyType', type)"
+              [class.active]="filters.propertyType === type">
+              {{ type }}
+            </button>
+          </div>
+        </div>
+
+        <!-- Bedrooms Filter -->
+        <div class="filter-dropdown" [class.active]="dropdownStates.bedrooms">
+          <button class="filter-button" (click)="toggleDropdown('bedrooms')">
+            <span>{{ getFilterLabel('bedrooms') }}</span>
+            <i class="fas fa-chevron-down"></i>
+          </button>
+          <div class="dropdown-menu" *ngIf="dropdownStates.bedrooms">
+            <button class="dropdown-item" *ngFor="let beds of bedroomOptions" (click)="setFilter('bedrooms', beds)"
+              [class.active]="filters.bedrooms === beds">
+              {{ beds === 'Any' ? 'Any' : beds + ' Bedrooms' }}
+            </button>
+          </div>
+        </div>
+
+
+
+
+
+
+
+        <!-- Sort By -->
+        <div class="sort-dropdown">
+          <button class="sort-button" (click)="toggleDropdown('sort')">
+            <span>Sort By</span>
+            <i class="fas fa-sort"></i>
+          </button>
+          <div class="dropdown-menu" *ngIf="dropdownStates.sort">
+            <button class="dropdown-item" (click)="setSortBy('newest')" [class.active]="sortBy === 'newest'">
+              Newest First
+            </button>
+            <button class="dropdown-item" (click)="setSortBy('priceLow')" [class.active]="sortBy === 'priceLow'">
+              Price: Low to High
+            </button>
+            <button class="dropdown-item" (click)="setSortBy('priceHigh')" [class.active]="sortBy === 'priceHigh'">
+              Price: High to Low
+            </button>
+          </div>
+        </div>
+
+        <!-- Clear Filters -->
+        <button class="clear-filters-btn" (click)="clearFilters()"
+          *ngIf="searchQuery || filters.priceRange || filters.location || filters.propertyType || filters.bedrooms">
+          <i class="fas fa-times"></i> Clear Filters
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Properties Display Section -->
+  <div class="properties-section">
+    <div class="container">
+      <!-- Loading State -->
+      <div *ngIf="isLoading" class="loading-state">
+        <p>Loading properties...</p>
+      </div>
+
+      <!-- Grid View Only -->
+      <div class="properties-grid" *ngIf="!isLoading && !error">
+        <div *ngFor="let property of displayedProperties; trackBy: trackByPropertyId" class="property-card"
+          [routerLink]="['/properties', property.id]">
+          <div class="property-image">
+            <img [src]="property.images[0]" [alt]="property.title" loading="lazy">
+            <span class="property-type-badge">{{ property.propertyType }}</span>
+          </div>
+          <div class="property-info">
+            <h3 class="property-title">{{ property.title }}</h3>
+            <p class="property-location">
+              <i class="fas fa-map-marker-alt"></i>
+              {{ property.city }}, {{ property.state }}
+            </p>
+            <div class="property-features">
+              <span class="feature">{{ property.bedrooms }} beds</span>
+              <span class="separator">•</span>
+              <span class="feature">{{ property.bathrooms }} baths</span>
+            </div>
+            <p class="property-price">{{ formatPrice(property.price) }}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- No Results -->
+      <div class="no-results" *ngIf="!isLoading && !error && displayedProperties.length === 0">
+        <i class="fas fa-home"></i>
+        <h3>No properties found</h3>
+        <p>Try adjusting your filters or search criteria</p>
+        <button class="clear-filters-btn" (click)="clearFilters()">
+          Clear All Filters
+        </button>
+      </div>
+
+      <!-- Pagination - FIXED CONDITION -->
+      <div class="pagination" *ngIf="!isLoading && !error && totalPages > 1">
+        <button class="page-btn" (click)="goToPage(currentPage - 1)" [disabled]="currentPage === 1">
+          <i class="fas fa-chevron-left"></i>
+        </button>
+
+        <button *ngFor="let page of getPageNumbers(); trackBy: trackByPageNumber" class="page-btn"
+          [class.active]="page === currentPage" (click)="goToPage(page)">
+          {{ page }}
+        </button>
+
+        <button class="page-btn" (click)="goToPage(currentPage + 1)" [disabled]="currentPage === totalPages">
+          <i class="fas fa-chevron-right"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

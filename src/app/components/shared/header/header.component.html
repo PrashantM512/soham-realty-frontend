@@ -1,0 +1,91 @@
+<header [class.scrolled]="isScrolled">
+  <nav class="navbar">
+    <div class="nav-container">
+      <!-- Logo -->
+      <a routerLink="/" class="logo-container">
+        <img src="assets/logo.png" alt="Logo" class="navbar-logo">
+        <span class="logo-text">Soham Realty</span>
+      </a>
+
+      <!-- Desktop Navigation -->
+      <div class="nav-menu" [class.active]="isMobileMenuOpen">
+        <ul class="nav-list">
+          <li class="nav-item">
+            <a routerLink="/" routerLinkActive="active"
+                [routerLinkActiveOptions]="{exact: true}"
+                class="nav-link"
+               (click)="closeMobileMenu()">
+              Home
+            </a>
+          </li>
+          <li class="nav-item">
+            <a routerLink="/properties" routerLinkActive="active"
+                class="nav-link"
+               (click)="closeMobileMenu()">
+              Properties
+            </a>
+          </li>
+          <li class="nav-item">
+            <a routerLink="/contact" routerLinkActive="active"
+                class="nav-link"
+               (click)="closeMobileMenu()">
+              Contact
+            </a>
+          </li>
+          <li class="nav-item">
+              <a routerLink="/about" routerLinkActive="active"
+                  class="nav-link"
+                 (click)="closeMobileMenu()">
+                About
+              </a>
+            </li>
+          <li class="nav-item">
+            <a routerLink="/admin" routerLinkActive="active"
+                class="nav-link"
+               (click)="closeMobileMenu()">
+              Admin Dashboard
+            </a>
+          </li>
+          
+          <!-- Mobile Auth Buttons (only visible in mobile menu) -->
+          <li class="nav-item mobile-logout" *ngIf="isAdmin">
+            <a class="nav-link" (click)="logout(); closeMobileMenu()">
+              Logout
+            </a>
+          </li>
+          <li class="nav-item mobile-signin" *ngIf="!isAdmin">
+            <a routerLink="/login" class="nav-link" (click)="closeMobileMenu()">
+              Sign In
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Desktop Auth Section -->
+      <div class="nav-auth">
+        <!-- Desktop Logout Button -->
+        <div class="desktop-logout" *ngIf="isAdmin">
+          <button class="login-link" (click)="logout()">
+            <i class="fas fa-sign-out-alt"></i>
+            Logout
+          </button>
+        </div>
+        
+        <!-- Desktop Sign In Link -->
+        <div class="desktop-signin" *ngIf="!isAdmin">
+          <a routerLink="/login" class="login-link">
+            <i class="fas fa-sign-in-alt"></i>
+            <span>Sign In</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Mobile Menu Toggle -->
+      <div class="mobile-toggle" (click)="toggleMobileMenu()">
+        <span class="bar" [class.active]="isMobileMenuOpen"></span>
+        <span class="bar" [class.active]="isMobileMenuOpen"></span>
+        <span class="bar" [class.active]="isMobileMenuOpen"></span>
+      </div>
+    </div>
+  </nav>
+</header>

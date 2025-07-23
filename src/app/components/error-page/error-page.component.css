@@ -1,0 +1,383 @@
+/* Error Page Component Styles */
+.error-page-container {
+  min-height: 100vh;
+  background-color: #f9fafb;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+}
+
+/* Navigation Styles */
+.navbar {
+  background-color: white;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+}
+
+.nav-content {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 4rem;
+}
+
+.nav-left {
+  display: flex;
+  align-items: center;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+}
+
+.logo-icon {
+  width: 2rem;
+  height: 2rem;
+  background-color: #2563eb;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  font-size: 0.875rem;
+}
+
+.logo-text {
+  margin-left: 0.5rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #111827;
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.nav-link {
+  color: #374151;
+  cursor: pointer;
+  transition: color 0.3s ease;
+  text-decoration: none;
+}
+
+.nav-link:hover {
+  color: #2563eb;
+}
+
+/* Main Content */
+.main-content {
+  max-width: 64rem;
+  margin: 0 auto;
+  padding: 2.5rem 1rem;
+}
+
+.error-card {
+  background-color: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+}
+
+/* Error Header */
+.error-header {
+  background: linear-gradient(to right, #e52525, #c01818);
+  padding: 1.5rem 2rem;
+  text-align: center;
+  color: white;
+}
+
+.error-icon-container {
+  width: 6rem;
+  height: 6rem;
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.5rem;
+}
+
+.error-icon {
+  width: 3rem;
+  height: 3rem;
+}
+
+.error-title {
+  font-size: 1.875rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  margin: 0 0 1rem 0;
+}
+
+.error-subtitle {
+  font-size: 1.125rem;
+  color: rgba(254, 202, 202, 1);
+  margin: 0;
+}
+
+/* Error Body */
+.error-body {
+  padding: 2rem;
+}
+
+/* Error Details */
+.error-details-container {
+  margin-bottom: 2rem;
+}
+
+.error-details-card {
+  background-color: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+}
+
+.details-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #991b1b;
+  margin: 0 0 0.5rem 0;
+}
+
+.error-message {
+  color: #b91c1c;
+  margin: 0 0 0.5rem 0;
+}
+
+.error-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.meta-item {
+  font-size: 0.875rem;
+  color: #dc2626;
+  margin: 0;
+}
+
+.meta-label {
+  font-weight: 500;
+}
+
+/* Action Buttons */
+.action-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: -15px;
+  justify-content: center;
+  margin-bottom: 3rem;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.btn-icon {
+  width: 1.25rem;
+  height: 1.25rem;
+  margin-right: 0.5rem;
+}
+
+.btn-primary {
+  background-color: #2563eb;
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #1d4ed8;
+  transform: translateY(-1px);
+}
+
+.btn-secondary {
+  background-color: #4b5563;
+  color: white;
+}
+
+.btn-secondary:hover {
+  background-color: #374151;
+  transform: translateY(-1px);
+}
+
+.btn-success {
+  background-color: #059669;
+  color: white;
+}
+
+.btn-success:hover {
+  background-color: #047857;
+  transform: translateY(-1px);
+}
+
+/* Support Section */
+.support-section {
+  text-align: center;
+}
+
+.support-card {
+  background-color: #f9fafb;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+}
+
+.support-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #111827;
+  margin: 0 0 1rem 0;
+}
+
+.support-description {
+  color: #6b7280;
+  margin: 0 0 1rem 0;
+}
+
+.support-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.support-link {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  color: #2563eb;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.support-link:hover {
+  color: #1d4ed8;
+}
+
+.support-icon {
+  width: 1.25rem;
+  height: 1.25rem;
+  margin-right: 0.5rem;
+}
+
+/* Developer Section */
+.developer-section {
+  margin-top: 2rem;
+}
+
+.developer-details {
+  background-color: #f3f4f6;
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+.developer-summary {
+  padding: 1rem;
+  cursor: pointer;
+  font-weight: 500;
+  color: #374151;
+  background-color: #f3f4f6;
+  border: none;
+  transition: background-color 0.3s ease;
+}
+
+.developer-summary:hover {
+  background-color: #e5e7eb;
+}
+
+.developer-content {
+  padding: 0 1rem 1rem;
+}
+
+.stack-trace {
+  font-size: 0.75rem;
+  color: #6b7280;
+  overflow: auto;
+  white-space: pre-wrap;
+  background-color: #f9fafb;
+  padding: 1rem;
+  border-radius: 0.25rem;
+  margin: 0;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .nav-content {
+    padding: 0 1rem;
+  }
+
+  .nav-right {
+    gap: 1rem;
+  }
+
+  .main-content {
+    padding: 2rem 1rem;
+  }
+
+  .error-header {
+    padding: 1.5rem 1rem;
+  }
+
+  .error-title {
+    font-size: 1.5rem;
+  }
+
+  .error-body {
+    padding: 1.5rem;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .btn {
+    justify-content: center;
+  }
+
+  .support-links {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .error-meta {
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .nav-right {
+    display: none;
+  }
+
+  .error-icon-container {
+    width: 4rem;
+    height: 4rem;
+  }
+
+  .error-icon {
+    width: 2rem;
+    height: 2rem;
+  }
+
+  .error-title {
+    font-size: 1.25rem;
+  }
+
+  .error-subtitle {
+    font-size: 1rem;
+  }
+}

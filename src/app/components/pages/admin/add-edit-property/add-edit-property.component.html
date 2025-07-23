@@ -1,0 +1,380 @@
+<div class="modal-overlay" (click)="onCancel()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>{{ property ? 'Edit Property' : 'Add New Property' }}</h2>
+      <button class="close-btn" (click)="onCancel()">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+
+    <!-- General Error Message -->
+    <div *ngIf="generalError" class="general-error-message">
+      <i class="fas fa-exclamation-triangle"></i>
+      {{ generalError }}
+    </div>
+
+    <form (ngSubmit)="onSubmit()" #propertyForm="ngForm">
+      <div class="modal-body">
+        <!-- Basic Information -->
+        <div class="form-section">
+          <h3>Basic Information</h3>
+          
+          <div class="form-group" [class.has-error]="shouldShowError('title')">
+            <label for="title">Title *</label>
+            <input 
+              type="text" 
+              id="title"
+              [value]="formData.title"
+              (input)="onInputChange($event, 'title')"
+              (blur)="onFieldBlur('title')"
+              name="title"
+              required
+              placeholder="Enter property title"
+              [class.error]="shouldShowError('title')">
+            <!-- FIXED: Error display -->
+            <div *ngIf="shouldShowError('title')" class="field-error">
+              {{ getFieldErrorMessage('title') }}
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group" [class.has-error]="shouldShowError('price')">
+              <label for="price">Price *</label>
+              <input 
+                type="number" 
+                id="price"
+                [value]="formData.price"
+                (input)="onInputChange($event, 'price')"
+                (blur)="onFieldBlur('price')"
+                name="price"
+                required
+                placeholder="Enter price"
+                min="1000"
+                [class.error]="shouldShowError('price')">
+              <!-- FIXED: Error display -->
+              <div *ngIf="shouldShowError('price')" class="field-error">
+                {{ getFieldErrorMessage('price') }}
+              </div>
+            </div>
+
+            <div class="form-group" [class.has-error]="shouldShowError('propertyType')">
+              <label for="propertyType">Property Type *</label>
+              <select 
+                id="propertyType"
+                [value]="formData.propertyType"
+                (change)="onSelectChange($event, 'propertyType')"
+                (blur)="onFieldBlur('propertyType')"
+                name="propertyType"
+                [class.error]="shouldShowError('propertyType')">
+                <option *ngFor="let type of propertyTypes" [value]="type">{{ type }}</option>
+              </select>
+              <!-- FIXED: Error display -->
+              <div *ngIf="shouldShowError('propertyType')" class="field-error">
+                {{ getFieldErrorMessage('propertyType') }}
+              </div>
+            </div>
+
+            <div class="form-group" [class.has-error]="shouldShowError('status')">
+              <label for="status">Status *</label>
+              <select 
+                id="status"
+                name="status"
+                [(ngModel)]="formData.status"
+                (blur)="onFieldBlur('status')"
+                required
+                [class.error]="shouldShowError('status')">
+                <option *ngFor="let status of statusOptions" [value]="status">{{ status }}</option>
+              </select>
+              <!-- FIXED: Error display -->
+              <div *ngIf="shouldShowError('status')" class="field-error">
+                {{ getFieldErrorMessage('status') }}
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group" [class.has-error]="shouldShowError('description')">
+            <label for="description">Description</label>
+            <textarea 
+              id="description"
+              [value]="formData.description || ''"
+              (input)="onTextareaChange($event, 'description')"
+              (blur)="onFieldBlur('description')"
+              name="description"
+              rows="3"
+              placeholder="Enter property description"
+              maxlength="1000"
+              [class.error]="shouldShowError('description')"></textarea>
+            <!-- FIXED: Character counter with safe null checking -->
+            <div class="field-info">
+              <span class="char-count" 
+                    [class.warning]="getCharacterCount(formData.description) > 800"
+                    [class.danger]="getCharacterCount(formData.description) > 950">
+                {{ getCharacterCount(formData.description) }}/1000
+              </span>
+            </div>
+            <div *ngIf="shouldShowError('description')" class="field-error">
+              {{ getFieldErrorMessage('description') }}
+            </div>
+          </div>
+        </div>
+
+        <!-- Location Information -->
+        <div class="form-section">
+          <h3>Location Information</h3>
+          
+          <div class="form-group" [class.has-error]="shouldShowError('address')">
+            <label for="address">Address *</label>
+            <input 
+              type="text" 
+              id="address"
+              [value]="formData.address"
+              (input)="onInputChange($event, 'address')"
+              (blur)="onFieldBlur('address')"
+              name="address"
+              required
+              placeholder="Enter street address"
+              [class.error]="shouldShowError('address')">
+            <!-- FIXED: Error display -->
+            <div *ngIf="shouldShowError('address')" class="field-error">
+              {{ getFieldErrorMessage('address') }}
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="city">City *</label>
+              <select
+                id="city"
+                name="city"
+                class="form-control"
+                [(ngModel)]="formData.city"
+                (blur)="onFieldBlur('city')"
+                required
+              >
+                <option disabled value="">All Cities</option>
+                <option *ngFor="let city of cities" [value]="city">
+                  {{ city }}
+                </option>
+              </select>
+              <div *ngIf="shouldShowError('city')" class="field-error">
+                <b>{{ getFieldErrorMessage('city') }}</b>
+              </div>
+            </div>
+
+            <div class="form-group" [class.has-error]="shouldShowError('state')">
+              <label for="state">State *</label>
+              <input 
+                type="text" 
+                id="state"
+                [value]="formData.state"
+                (input)="onInputChange($event, 'state')"
+                (blur)="onFieldBlur('state')"
+                name="state"
+                required
+                placeholder="State"
+                pattern="[a-zA-Z\\s]+"
+                [class.error]="shouldShowError('state')">
+              <!-- FIXED: Error display -->
+              <div *ngIf="shouldShowError('state')" class="field-error">
+                {{ getFieldErrorMessage('state') }}
+              </div>
+            </div>
+
+            <div class="form-group" [class.has-error]="shouldShowError('zip')">
+              <label for="zip">ZIP Code *</label>
+              <input 
+                type="text" 
+                id="zip"
+                [value]="formData.zip"
+                (input)="onInputChange($event, 'zip')"
+                (blur)="onFieldBlur('zip')"
+                name="zip"
+                required
+                placeholder="ZIP"
+                pattern="\\d{6}"
+                maxlength="6"
+                [class.error]="shouldShowError('zip')">
+              <!-- FIXED: Error display -->
+              <div *ngIf="shouldShowError('zip')" class="field-error">
+                {{ getFieldErrorMessage('zip') }}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Property Details -->
+        <div class="form-section">
+          <h3>Property Details</h3>
+          
+          <div class="form-row">
+            <div class="form-group" [class.has-error]="shouldShowError('bedrooms')">
+              <label for="bedrooms">Bedrooms</label>
+              <input 
+                type="number" 
+                id="bedrooms"
+                [value]="formData.bedrooms"
+                (input)="onInputChange($event, 'bedrooms')"
+                (blur)="onFieldBlur('bedrooms')"
+                name="bedrooms"
+                min="0"
+                max="20"
+                placeholder="0"
+                [class.error]="shouldShowError('bedrooms')">
+              <!-- FIXED: Error display -->
+              <div *ngIf="shouldShowError('bedrooms')" class="field-error">
+                {{ getFieldErrorMessage('bedrooms') }}
+              </div>
+            </div>
+
+            <div class="form-group" [class.has-error]="shouldShowError('bathrooms')">
+              <label for="bathrooms">Bathrooms</label>
+              <input 
+                type="number" 
+                id="bathrooms"
+                [value]="formData.bathrooms"
+                (input)="onInputChange($event, 'bathrooms')"
+                (blur)="onFieldBlur('bathrooms')"
+                name="bathrooms"
+                min="0"
+                max="20"
+                step="0.5"
+                placeholder="0"
+                [class.error]="shouldShowError('bathrooms')">
+              <!-- FIXED: Error display -->
+              <div *ngIf="shouldShowError('bathrooms')" class="field-error">
+                {{ getFieldErrorMessage('bathrooms') }}
+              </div>
+            </div>
+
+            <div class="form-group" [class.has-error]="shouldShowError('squareFootage')">
+              <label for="squareFootage">Square Footage</label>
+              <input 
+                type="number" 
+                id="squareFootage"
+                [value]="formData.squareFootage"
+                (input)="onInputChange($event, 'squareFootage')"
+                (blur)="onFieldBlur('squareFootage')"
+                name="squareFootage"
+                min="0"
+                max="50000"
+                placeholder="0"
+                [class.error]="shouldShowError('squareFootage')">
+              <!-- FIXED: Error display -->
+              <div *ngIf="shouldShowError('squareFootage')" class="field-error">
+                {{ getFieldErrorMessage('squareFootage') }}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Media -->
+        <div class="form-section">
+          <h3>Media</h3>
+          
+          <!-- Image Upload Section -->
+          <div class="images-section" [class.has-error]="shouldShowError('images')">
+            <label>Property Images *</label>
+            <p class="field-hint">Upload up to 5 images. At least one image is required. The first image will be used as the main property image.</p>
+            <p class="field-hint" style="color: red;">If you're updating property image then please upload your all images again , becoz old one will replace after update</p>
+            
+            <div class="image-upload-grid" [class.error]="shouldShowError('images')">
+              <div class="image-upload-box" *ngFor="let index of getImageIndexes(); trackBy: trackByIndex">
+                <input 
+                  type="file" 
+                  [id]="'image' + index"
+                  [name]="'image' + index"
+                  accept="image/*"
+                  (change)="onFileSelected($event, index)"
+                  class="file-input"
+                  #fileInput>
+                
+                <div class="upload-placeholder" *ngIf="!hasImage(index)" (click)="fileInput.click()">
+                  <i class="fas fa-cloud-upload-alt"></i>
+                  <span>{{ index === 0 ? 'Main Image' : 'Image ' + (index + 1) }}</span>
+                  <span class="upload-hint">Click to upload</span>
+                </div>
+                
+                <div class="image-preview-container" *ngIf="hasImage(index)">
+                  <img [src]="getImagePreview(index)" [alt]="'Preview ' + (index + 1)">
+                  <button type="button" class="remove-image-btn" (click)="removeImage(index)">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <!-- FIXED: Image validation error -->
+            <div *ngIf="shouldShowError('images')" class="field-error">
+              {{ getFieldErrorMessage('images') }}
+            </div>
+          </div>
+
+          <!-- Featured field -->
+          <div class="form-row">
+            <div class="form-group">
+              <label>Featured Property? (want to show on homepage? but status should be Available)</label>
+              <div class="radio-group" style="display: inline-flex;">
+                <div class="radio-option" style="margin-right: 100%;">
+                  <input
+                    type="radio"
+                    id="featuredNo"
+                    name="featured"
+                    [checked]="formData.featured === false"
+                    (change)="onRadioChange('featured', false)"
+                  />
+                  <label for="featuredNo">No</label>
+                </div>
+                <div class="radio-option">
+                  <input
+                    type="radio"
+                    id="featuredYes"
+                    name="featured"
+                    [checked]="formData.featured === true"
+                    (change)="onRadioChange('featured', true)"
+                  />
+                  <label for="featuredYes">Yes</label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- FIXED: Video Link with proper null checking -->
+          <div class="form-group" [class.has-error]="shouldShowError('videoLink')">
+            <label for="videoLink">Video Link (Instagram Reel URL)</label>
+            <input 
+              type="text" 
+              id="videoLink"
+              [value]="formData.videoLink || ''"
+              (input)="onInputChange($event, 'videoLink')"
+              (blur)="onFieldBlur('videoLink')"
+              name="videoLink"
+              placeholder="https://www.instagram.com/reel/xxxxx/"
+              [class.error]="shouldShowError('videoLink')"
+              [class.success]="formData.videoLink && !shouldShowError('videoLink')">
+            <!-- FIXED: Real-time validation feedback with null checking -->
+            <div *ngIf="shouldShowError('videoLink')" class="field-error">
+              {{ getFieldErrorMessage('videoLink') }}
+            </div>
+            <!-- <div *ngIf="formData.videoLink && formData.videoLink.length > 0 && !shouldShowError('videoLink')" class="field-success">
+              <i class="fas fa-check-circle"></i> Valid Instagram URL
+            </div> -->
+            <div class="field-hint">
+              <i class="fas fa-info-circle"></i>
+              Only Instagram post/reel URLs are allowed. Example: https://www.instagram.com/reel/xxxxx/
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="cancel-btn" (click)="onCancel()" [disabled]="isSubmitting">Cancel</button>
+        <button type="submit" class="save-btn btn-gradient" [disabled]="isSubmitting">
+          <span *ngIf="!isSubmitting">{{ property ? 'Update Property' : 'Add Property' }}</span>
+          <span *ngIf="isSubmitting">
+            <i class="fas fa-spinner fa-spin"></i>
+            {{ property ? 'Updating...' : 'Adding...' }}
+          </span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

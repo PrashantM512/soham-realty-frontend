@@ -1,0 +1,209 @@
+.about-page {
+    padding-top: 80px;
+    min-height: 100vh;
+    background-color: #ffffff;
+  }
+  
+  /* Hero Section */
+  .hero-section {
+    padding: 60px 0;
+    background-color: #f8f9fa;
+  }
+  
+  .container {
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+  
+  .hero-content {
+    display: flex;
+    align-items: center;
+    gap: 70px;
+  }
+  
+  /* Agent Image */
+  .agent-image-container {
+    position: relative;
+    flex-shrink: 0;
+  }
+  
+  .agent-image {
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    position: relative;
+    z-index: 2;
+  }
+  
+
+  
+  /* Agent Info */
+  .agent-info {
+    flex: 1;
+  }
+  
+  .agent-name {
+    font-size: 42px;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 8px;
+  }
+  
+  .agent-title {
+    font-size: 20px;
+    color: #0066ff;
+    font-weight: 500;
+    margin-bottom: 24px;
+  }
+  
+  .agent-description {
+    font-size: 16px;
+    line-height: 1.8;
+    color: #666;
+    margin-bottom: 32px;
+    text-align: justify;
+  }
+  
+  .contact-btn {
+    display: inline-block;
+    padding: 14px 32px;
+    background-color: #0066ff;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    margin-bottom: 32px;
+  }
+  
+  .contact-btn:hover {
+    background-color: #0052cc;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 102, 255, 0.3);
+  }
+  
+  /* Contact Info */
+  .contact-info {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .contact-item {
+    font-size: 16px;
+    color: #666;
+    margin: 0;
+  }
+  
+  .contact-item .label {
+    font-weight: 500;
+    color: #333;
+  }
+  
+  .contact-item a {
+    color: #0066ff;
+    text-decoration: none;
+  }
+  
+  .contact-item a:hover {
+    text-decoration: underline;
+  }
+  
+  /* Additional Info Section */
+  .additional-info {
+    padding: 60px 0;
+  }
+  
+  .info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+  }
+  
+  .info-card {
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 30px;
+    transition: all 0.3s ease;
+  }
+  
+  .info-card:hover {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    transform: translateY(-4px);
+  }
+  
+  .info-card h3 {
+    font-size: 24px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  .info-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .info-list li {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid #f0f0f0;
+    color: #666;
+    font-size: 16px;
+  }
+  
+  .info-list li:last-child {
+    border-bottom: none;
+  }
+  
+  .info-list i {
+    color: #0066ff;
+    font-size: 14px;
+  }
+  
+  /* Responsive */
+  @media (max-width: 768px) {
+    .hero-content {
+      flex-direction: column;
+      text-align: center;
+      gap: 40px;
+    }
+  
+    .agent-image {
+      width: 200px;
+      height: 200px;
+    }
+  
+    .image-decoration {
+      display: none;
+      width: 200px;
+      height: 200px;
+    }
+  
+    .agent-name {
+      font-size: 32px;
+    }
+  
+    .agent-description {
+      text-align: center;
+    }
+  
+    .contact-btn {
+      width: 100%;
+    }
+  
+    .info-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  .name-container {
+    user-select: none;
+  }

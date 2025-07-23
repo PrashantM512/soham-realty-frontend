@@ -1,0 +1,18 @@
+<footer class="footer">
+    <div class="footer-container">
+      <!-- Social Links -->
+      <div class="social-links">
+        <a *ngFor="let social of socialLinks" 
+           [href]="social.url" 
+           target="_blank" 
+           rel="noopener noreferrer"
+           [attr.aria-label]="social.label"
+           class="social-link">
+          <i [class]="social.icon"></i>
+        </a>
+      </div>
+      
+      <!-- Copyright -->
+      <p class="copyright">© {{ currentYear }} Soham Realty. All rights reserved.</p>
+    </div>
+  </footer>

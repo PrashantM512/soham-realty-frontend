@@ -1,0 +1,272 @@
+<!-- Property Details Page -->
+<div class="property-details-container">
+  <!-- Navigation Tabs -->
+  <div class="tabs-container">
+    <div class="tabs">
+      <button 
+        class="tab" 
+        [ngClass]="{'active': activeTab === 'overview'}"
+        (click)="setActiveTab('overview')">
+        Overview
+      </button>
+      <button 
+        class="tab" 
+        [ngClass]="{'active': activeTab === 'features'}"
+        (click)="setActiveTab('features')">
+        Features
+      </button>
+      <button 
+        class="tab" 
+        [ngClass]="{'active': activeTab === 'location'}"
+        (click)="setActiveTab('location')">
+        Location
+      </button>
+    </div>
+  </div>
+
+  <!-- Tab Content -->
+  <div class="tab-content">
+    <!-- Overview Tab -->
+    <div class="tab-panel" *ngIf="activeTab === 'overview'">
+      <!-- Image Gallery -->
+      <div class="image-gallery">
+        <div class="main-image-container">
+          <img 
+            [src]="property?.images?.[currentImageIndex]" 
+            [alt]="property?.title"
+            class="main-image"
+            loading="lazy">
+          
+          <!-- Navigation Arrows -->
+          <button 
+            class="nav-arrow prev-arrow" 
+            (click)="prevImage()"
+            [disabled]="currentImageIndex === 0">
+            ‹
+          </button>
+          <button 
+            class="nav-arrow next-arrow" 
+            (click)="nextImage()"
+            [disabled]="property && currentImageIndex === property.images.length - 1">
+            ›
+          </button>
+        </div>
+        
+        <!-- Thumbnail Images -->
+        <div class="thumbnails">
+          <img 
+            *ngFor="let image of property?.images; let i = index"
+            [src]="image" 
+            [alt]="'Property image ' + (i + 1)"
+            class="thumbnail"
+            [ngClass]="{'active': i === currentImageIndex}"
+            (click)="selectImage(i)"
+            loading="lazy">
+        </div>
+      </div>
+
+      <!-- Property Content -->
+      <div class="property-content">
+        <div class="property-header">
+          <h1 class="property-title">{{property?.title}}</h1>
+          <p class="property-description">{{property?.description}}</p>
+        </div>
+
+        <div class="property-details-grid">
+          <!-- Left Column - Property Info -->
+          <div class="details-column">
+            <div class="detail-row">
+              <span class="detail-label"><i class="fa-solid fa-money-bill-wave" style="color: #2ecc71;"></i>&nbsp; Price</span>
+              <span class="detail-value price">{{formatPrice(property?.price || 0)}}</span>
+            </div>
+          
+            <div class="detail-row">
+              <span class="detail-label"><i class="fa-solid fa-map-marker-alt" style="color: #e74c3c;"></i>&nbsp; Address</span>
+              <span class="detail-value">{{property?.address}}</span>
+            </div>
+          
+            <div class="detail-row">
+              <span class="detail-label"><i class="fa-solid fa-city" style="color: #3498db;"></i> &nbsp;City</span>
+              <span class="detail-value">{{property?.city}}</span>
+            </div>
+          
+            <div class="detail-row">
+              <span class="detail-label"><i class="fa-solid fa-flag" style="color: #f1c40f;"></i>&nbsp; State</span>
+              <span class="detail-value">{{property?.state}}</span>
+            </div>
+          
+            <div class="detail-row">
+              <span class="detail-label"><i class="fa-solid fa-mail-bulk" style="color: #9b59b6;"></i>&nbsp; ZIP</span>
+              <span class="detail-value">{{property?.zip}}</span>
+            </div>
+          
+            <div class="detail-row">
+              <span class="detail-label"><i class="fa-solid fa-bed" style="color: #16a085;"></i>&nbsp; Bedrooms</span>
+              <span class="detail-value">{{property?.bedrooms}}</span>
+            </div>
+          
+            <div class="detail-row">
+              <span class="detail-label"><i class="fa-solid fa-bath" style="color: #2980b9;"></i>&nbsp; Bathrooms</span>
+              <span class="detail-value">{{property?.bathrooms}}</span>
+            </div>
+          
+            <div class="detail-row">
+              <span class="detail-label"><i class="fa-solid fa-ruler-combined" style="color: #e67e22;"></i>&nbsp; Square Footage</span>
+              <span class="detail-value">{{(property?.squareFootage || 0) | number}} sq ft</span>
+            </div>
+          
+
+            <!-- Video Link -->
+            <div class="detail-row">
+              <span class="detail-label">Video Tour</span>
+              <div style="align-items: center;">
+                <button
+                  class="video-link-btn"
+                  (click)="openVideoLink()"
+                  [disabled]="!property?.videoLink"
+                  [title]="property?.videoLink ? 'Click to watch' : 'Video not available'"
+                >
+                  📹 Watch Property Video
+                </button>
+                <small *ngIf="!property?.videoLink" style="margin-left: 2px; font-size: 1rem;" class="video-unavailable">Video not available</small>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Column - Contact Form -->
+          <div class="contact-column">
+            <div class="contact-form-container">
+              <h3>Interested in this property?</h3>
+              <div *ngIf="submitSuccess" class="success-message">Message sent successfully!!!</div>
+              <form [formGroup]="contactForm" (ngSubmit)="onSubmitContact()" class="contact-form">
+                <div class="form-group">
+                  <label for="name">Name *</label>
+                  <input 
+                    type="text" 
+                    id="name"
+                    formControlName="name"
+                    class="form-control"
+                    [ngClass]="{'error': contactForm.get('name')?.invalid && contactForm.get('name')?.touched}">
+                  <div class="error-message" *ngIf="contactForm.get('name')?.hasError('required') && contactForm.get('name')?.touched" class="error-message">
+                    Name is required.
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="email">Email *</label>
+                  <input 
+                    type="email" 
+                    id="email"
+                    formControlName="email"
+                    class="form-control"
+                    [ngClass]="{'error': contactForm.get('email')?.invalid && contactForm.get('email')?.touched}">
+                  <div class="error-message" *ngIf="contactForm.get('email')?.hasError('required') && contactForm.get('email')?.touched" class="error-message">
+                    Email is required.
+                  </div>
+                  <div class="error-message" *ngIf="contactForm.get('email')?.hasError('email') && contactForm.get('email')?.touched" class="error-message">
+                    Please enter a valid email address.
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="phone">Phone</label>
+                  <input 
+                    type="tel" 
+                    id="phone"
+                    formControlName="phone"
+                    class="form-control"
+                    [ngClass]="{'error': contactForm.get('phone')?.invalid && contactForm.get('phone')?.touched}">
+                  <div class="error-message" *ngIf="contactForm.get('phone')?.hasError('pattern') && contactForm.get('phone')?.touched" class="error-message">
+                    Please enter a valid phone number.
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="message">Message *</label>
+                  <textarea 
+                    id="message"
+                    formControlName="message"
+                    class="form-control"
+                    rows="4"
+                    placeholder="I'm interested in this property. Please contact me with more details."
+                    [ngClass]="{'error': contactForm.get('message')?.invalid && contactForm.get('message')?.touched}">
+                  </textarea>
+                  <div class="error-message" *ngIf="contactForm.get('message')?.hasError('required') && contactForm.get('message')?.touched" class="error-message">
+                    Message is required.
+                  </div>
+                </div>
+
+                <button 
+                  type="submit" 
+                  class="submit-btn btn-gradient"
+                  [disabled]="isSubmitting">
+                  <span *ngIf="!isSubmitting">Send Message</span>
+                  <span *ngIf="isSubmitting">Sending...</span>
+                </button>
+
+                <!-- Success Message -->
+               
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Features Tab -->
+    <div class="tab-panel" *ngIf="activeTab === 'features'">
+      <div class="features-content">
+        <h2>Property Features</h2>
+        <div class="features-grid">
+          <div class="feature-item">
+            <span class="feature-icon">🏠</span>
+            <span>Modern Architecture</span>
+          </div>
+          <div class="feature-item">
+            <span class="feature-icon">🚗</span>
+            <span>2-Car Garage</span>
+          </div>
+          <div class="feature-item">
+            <span class="feature-icon">🏊</span>
+            <span>Swimming Pool</span>
+          </div>
+          <div class="feature-item">
+            <span class="feature-icon">🌳</span>
+            <span>Landscaped Garden</span>
+          </div>
+          <div class="feature-item">
+            <span class="feature-icon">🔥</span>
+            <span>Fireplace</span>
+          </div>
+          <div class="feature-item">
+            <span class="feature-icon">🍳</span>
+            <span>Gourmet Kitchen</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Location Tab -->
+    <div class="tab-panel" *ngIf="activeTab === 'location'">
+      <div class="location-content">
+        <h2>Location & Neighborhood</h2>
+        <div class="location-info">
+          <p><strong>Address:</strong> {{property?.address}}, {{property?.city}}, {{property?.state}} {{property?.zip}}</p>
+          
+          <!-- Google Maps Embed -->
+          <div class="map-container">
+            <iframe 
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3024.1!2d-74.0059!3d40.7128!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNDDCsDQyJzQ2LjEiTiA3NMKwMDAnMjEuNCJX!5e0!3m2!1sen!2sus!4v1"
+              width="100%" 
+              height="300" 
+              style="border:0;" 
+              allowfullscreen="" 
+              loading="lazy" 
+              referrerpolicy="no-referrer-when-downgrade">
+            </iframe>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

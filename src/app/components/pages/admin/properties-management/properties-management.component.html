@@ -1,0 +1,422 @@
+<div class="properties-management">
+  <!-- Header -->
+  <div class="page-header">
+    <h1 class="page-title name-container">All Properties :</h1>
+    <button class="add-property-btn btn-gradient" (click)="openAddProperty()">
+      <i class="fas fa-plus"></i>
+      Add Property
+    </button>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="loading-container">
+    <div class="loading-spinner"></div>
+    <p>Loading properties...</p>
+  </div>
+
+  <!-- Properties Table -->
+  <div class="table-container name-container" *ngIf="!isLoading">
+    <table class="properties-table name-container" *ngIf="properties.length > 0">
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Price</th>
+          <th>Description</th>
+          <th>Status</th>
+          <th>View</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let property of paginatedProperties">
+          <td class="property-title-cell">{{ property.title }}</td>
+          <td class="price-cell">{{ formatPrice(property.price) }}</td>
+          <td class="description-cell">{{ property.description }}</td>
+          <td class="status-cell">
+            <span class="status-badge" [class.available]="property.status === 'Available'" 
+                  [class.sold]="property.status === 'Sold'">
+              {{ property.status }}
+            </span>
+          </td>
+          <td class="view-cell">
+            <button class="action-btn view-btn" style="color: blue;" (click)="viewProperty(property)">
+              <i class="fas fa-eye"></i>
+              View
+            </button>
+          </td>
+          <td class="actions-cell">
+            <button class="action-btn edit-btn" (click)="openEditProperty(property)">Edit</button>
+            <span class="separator">|</span>
+            <button class="action-btn delete-btn" (click)="confirmDelete(property)">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Pagination -->
+    <div class="pagination-container" *ngIf="properties.length > 0 && totalPropertiesPages > 1">
+      <div class="pagination-info">
+        Showing {{ getStartIndex() }} to {{ getEndIndex() }} of {{ totalProperties }} properties
+      </div>
+      <div class="pagination-controls">
+        <button class="pagination-btn" 
+                [disabled]="propertiesCurrentPage === 1" 
+                (click)="goToPropertiesPage(propertiesCurrentPage - 1)">
+          <i class="fas fa-chevron-left"></i>
+          Previous
+        </button>
+        
+        <div class="pagination-numbers">
+          <button *ngFor="let page of getPropertiesPageNumbers()" 
+                  class="pagination-number" 
+                  [class.active]="page === propertiesCurrentPage"
+                  (click)="goToPropertiesPage(page)">
+            {{ page }}
+          </button>
+        </div>
+        
+        <button class="pagination-btn" 
+                [disabled]="propertiesCurrentPage === totalPropertiesPages" 
+                (click)="goToPropertiesPage(propertiesCurrentPage + 1)">
+          Next
+          <i class="fas fa-chevron-right"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Empty State -->
+    <div class="empty-state" *ngIf="properties.length === 0 && !isLoading">
+      <i class="fas fa-home"></i>
+      <h3>No properties found</h3>
+      <p>Start by adding your first property</p>
+      <button class="add-property-btn btn-gradient" (click)="openAddProperty()">
+        <i class="fas fa-plus"></i>
+        Add Property
+      </button>
+    </div>
+  </div>
+
+  <!-- Add/Edit Property Modal -->
+  <app-add-edit-property 
+    *ngIf="showAddEditModal"
+    [property]="selectedProperty"
+    (save)="onPropertySaved($event)"
+    (close)="closeModal()">
+  </app-add-edit-property>
+
+  <!-- Delete Confirmation Dialog -->
+  <div class="modal-overlay" *ngIf="showDeleteConfirm" (click)="cancelDelete()">
+    <div class="delete-dialog" (click)="$event.stopPropagation()">
+      <h3>Confirm Delete</h3>
+      <p>Are you sure you want to delete "{{ propertyToDelete?.title }}"?</p>
+      <div class="dialog-actions">
+        <button class="cancel-btn" (click)="cancelDelete()">Cancel</button>
+        <button class="confirm-delete-btn" (click)="deleteProperty()">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- View Property Dialog -->
+  <div class="modal-overlay" *ngIf="showViewDialog" (click)="closeViewDialog()">
+    <div class="view-dialog" (click)="$event.stopPropagation()">
+      <div class="view-dialog-header" >
+        <h2 class="view-dialog-title" style="visibility: hidden;">{{ viewingProperty?.title }}</h2>
+        <button class="close-dialog-btn" style="visibility: hidden;">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      
+      <div class="view-dialog-body" *ngIf="viewingProperty">
+        <!-- Image Gallery -->
+        <div class="view-dialog-header-two">
+          <h2 class="view-dialog-title">{{ viewingProperty?.title }}</h2>
+          <button class="close-dialog-btn" (click)="closeViewDialog()">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        <hr class="row-divider">
+        <div class="property-gallery">
+          <h3 class="section-title">
+            <i class="fas fa-images"></i>
+            Property Images
+          </h3>
+          <div class="images-grid" *ngIf="viewingProperty.images && viewingProperty.images.length > 0">
+            <div class="image-item" *ngFor="let image of viewingProperty.images; let i = index">
+              <img [src]="image" alt="{{ viewingProperty.title }} - Image {{ i + 1 }}" (click)="openImageModal(image)">
+              <div class="image-overlay">
+                <i class="fas fa-search-plus"></i>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="!viewingProperty.images || viewingProperty.images.length === 0" 
+               class="no-image-placeholder">
+            <i class="fas fa-image"></i>
+            <p>No images available</p>
+          </div>
+        </div>
+
+        <!-- Basic Property Details -->
+        <h3 class="section-title">
+          <i class="fas fa-home"></i>
+          Basic Information
+        </h3>
+        <div class="property-details-grid">
+          <div class="detail-card">
+            <div class="detail-label">
+              <i class="fas fa-dollar-sign"></i>
+              PRICE
+            </div>
+            <div class="detail-value price-value">{{ formatPrice(viewingProperty.price) }}</div>
+          </div>
+          
+          <div class="detail-card">
+            <div class="detail-label">
+              <i class="fas fa-info-circle"></i>
+              STATUS
+            </div>
+            <span class="status-value" 
+                  [class.available]="viewingProperty.status === 'Available'" 
+                  [class.sold]="viewingProperty.status === 'Sold'">
+              {{ viewingProperty.status }}
+            </span>
+          </div>
+          
+          <div class="detail-card" *ngIf="viewingProperty.type">
+            <div class="detail-label">
+              <i class="fas fa-building"></i>
+              PROPERTY TYPE
+            </div>
+            <div class="detail-value">{{ viewingProperty.type }}</div>
+          </div>
+          
+          <div class="detail-card" *ngIf="viewingProperty.area">
+            <div class="detail-label">
+              <i class="fas fa-ruler-combined"></i>
+              AREA
+            </div>
+            <div class="detail-value">{{ viewingProperty.area }} sq ft</div>
+          </div>
+          
+          <div class="detail-card" *ngIf="viewingProperty.bedrooms">
+            <div class="detail-label">
+              <i class="fas fa-bed"></i>
+              BEDROOMS
+            </div>
+            <div class="detail-value">{{ viewingProperty.bedrooms }}</div>
+          </div>
+          
+          <div class="detail-card" *ngIf="viewingProperty.bathrooms">
+            <div class="detail-label">
+              <i class="fas fa-bath"></i>
+              BATHROOMS
+            </div>
+            <div class="detail-value">{{ viewingProperty.bathrooms }}</div>
+          </div>
+        </div>
+
+        <!-- Full Description -->
+        <div class="description-section">
+          <h3 class="section-title">
+            <i class="fas fa-align-left"></i>
+            Description
+          </h3>
+          <p class="description-text">{{ viewingProperty.description }}</p>
+        </div>
+
+        <!-- Location & Address -->
+        <div class="detail-section" *ngIf="viewingProperty.location || viewingProperty.address || viewingProperty.city || viewingProperty.state || viewingProperty.zipCode">
+          <h3 class="section-title">
+            <i class="fas fa-map-marked-alt"></i>
+            Location Details
+          </h3>
+          <div class="info-grid">
+            <div class="info-item" *ngIf="viewingProperty.address">
+              <div class="info-icon">
+                <i class="fas fa-road"></i>
+              </div>
+              <div class="info-content">
+                <div class="info-label">Address</div>
+                <div class="info-value">{{ viewingProperty.address }}</div>
+              </div>
+            </div>
+            
+            <div class="info-item" *ngIf="viewingProperty.city">
+              <div class="info-icon">
+                <i class="fas fa-city"></i>
+              </div>
+              <div class="info-content">
+                <div class="info-label">City</div>
+                <div class="info-value">{{ viewingProperty.city }}</div>
+              </div>
+            </div>
+            
+            <div class="info-item" *ngIf="viewingProperty.state">
+              <div class="info-icon">
+                <i class="fas fa-map"></i>
+              </div>
+              <div class="info-content">
+                <div class="info-label">State</div>
+                <div class="info-value">{{ viewingProperty.state }}</div>
+              </div>
+            </div>
+            
+            <div class="info-item" *ngIf="viewingProperty.zipCode">
+              <div class="info-icon">
+                <i class="fas fa-mail-bulk"></i>
+              </div>
+              <div class="info-content">
+                <div class="info-label">ZIP Code</div>
+                <div class="info-value">{{ viewingProperty.zipCode }}</div>
+              </div>
+            </div>
+            
+            <div class="info-item" *ngIf="viewingProperty.location">
+              <div class="info-icon">
+                <i class="fas fa-map-marker-alt"></i>
+              </div>
+              <div class="info-content">
+                <div class="info-label">Area/Location</div>
+                <div class="info-value">{{ viewingProperty.location }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Additional Property Features -->
+        <div class="detail-section" *ngIf="viewingProperty.yearBuilt || viewingProperty.parking || viewingProperty.garage || viewingProperty.lot || viewingProperty.floors">
+          <h3 class="section-title">
+            <i class="fas fa-list-ul"></i>
+            Additional Features
+          </h3>
+          <div class="info-grid">
+            <div class="info-item" *ngIf="viewingProperty.yearBuilt">
+              <div class="info-icon">
+                <i class="fas fa-calendar-alt"></i>
+              </div>
+              <div class="info-content">
+                <div class="info-label">Year Built</div>
+                <div class="info-value">{{ viewingProperty.yearBuilt }}</div>
+              </div>
+            </div>
+            
+            <div class="info-item" *ngIf="viewingProperty.parking">
+              <div class="info-icon">
+                <i class="fas fa-car"></i>
+              </div>
+              <div class="info-content">
+                <div class="info-label">Parking</div>
+                <div class="info-value">{{ viewingProperty.parking }} spaces</div>
+              </div>
+            </div>
+            
+            <div class="info-item" *ngIf="viewingProperty.garage">
+              <div class="info-icon">
+                <i class="fas fa-warehouse"></i>
+              </div>
+              <div class="info-content">
+                <div class="info-label">Garage</div>
+                <div class="info-value">{{ viewingProperty.garage }}</div>
+              </div>
+            </div>
+            
+            <div class="info-item" *ngIf="viewingProperty.lot">
+              <div class="info-icon">
+                <i class="fas fa-expand-arrows-alt"></i>
+              </div>
+              <div class="info-content">
+                <div class="info-label">Lot Size</div>
+                <div class="info-value">{{ viewingProperty.lot }}</div>
+              </div>
+            </div>
+            
+            <div class="info-item" *ngIf="viewingProperty.floors">
+              <div class="info-icon">
+                <i class="fas fa-layer-group"></i>
+              </div>
+              <div class="info-content">
+                <div class="info-label">Floors</div>
+                <div class="info-value">{{ viewingProperty.floors }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Amenities -->
+        <div class="detail-section" *ngIf="viewingProperty.amenities && viewingProperty.amenities.length > 0">
+          <h3 class="section-title">
+            <i class="fas fa-star"></i>
+            Amenities
+          </h3>
+          <div class="amenities-grid">
+            <div class="amenity-item" *ngFor="let amenity of viewingProperty.amenities">
+              <i class="fas fa-check-circle"></i>
+              {{ amenity }}
+            </div>
+          </div>
+        </div>
+
+        <!-- Contact Information -->
+        <div class="detail-section" *ngIf="viewingProperty.contactName || viewingProperty.contactPhone || viewingProperty.contactEmail">
+          <h3 class="section-title">
+            <i class="fas fa-user-tie"></i>
+            Contact Information
+          </h3>
+          <div class="info-grid">
+            <div class="info-item" *ngIf="viewingProperty.contactName">
+              <div class="info-icon">
+                <i class="fas fa-user"></i>
+              </div>
+              <div class="info-content">
+                <div class="info-label">Contact Person</div>
+                <div class="info-value">{{ viewingProperty.contactName }}</div>
+              </div>
+            </div>
+            
+            <div class="info-item" *ngIf="viewingProperty.contactPhone">
+              <div class="info-icon">
+                <i class="fas fa-phone"></i>
+              </div>
+              <div class="info-content">
+                <div class="info-label">Phone</div>
+                <div class="info-value">
+                  <a [href]="'tel:' + viewingProperty.contactPhone">{{ viewingProperty.contactPhone }}</a>
+                </div>
+              </div>
+            </div>
+            
+            <div class="info-item" *ngIf="viewingProperty.contactEmail">
+              <div class="info-icon">
+                <i class="fas fa-envelope"></i>
+              </div>
+              <div class="info-content">
+                <div class="info-label">Email</div>
+                <div class="info-value">
+                  <a [href]="'mailto:' + viewingProperty.contactEmail">{{ viewingProperty.contactEmail }}</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Additional Notes -->
+        <div class="detail-section" *ngIf="viewingProperty.notes">
+          <h3 class="section-title">
+            <i class="fas fa-sticky-note"></i>
+            Additional Notes
+          </h3>
+          <div class="notes-content">
+            {{ viewingProperty.notes }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Image Modal -->
+  <div class="image-modal" *ngIf="showImageModal" (click)="closeImageModal()">
+    <img [src]="selectedImage" alt="Full size image" (click)="$event.stopPropagation()">
+    <button class="close-image-modal" (click)="closeImageModal()">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+</div>

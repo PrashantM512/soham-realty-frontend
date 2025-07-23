@@ -1,0 +1,608 @@
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.modal-content {
+  background: white;
+  border-radius: 12px;
+  max-width: 800px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  margin: auto;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+}
+
+/* Modal Header - Fixed */
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px;
+  border-bottom: 1px solid #e0e0e0;
+  background: white;
+  border-radius: 12px 12px 0 0;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.modal-header h2 {
+  font-size: 24px;
+  font-weight: 600;
+  color: #333;
+  margin: 0;
+}
+
+.close-btn {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  border-radius: 6px;
+  color: #666;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.close-btn:hover {
+  background-color: #f5f7fa;
+  color: #333;
+}
+
+/* Modal Body - Scrollable */
+.modal-body {
+  padding: 24px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  flex: 1;
+  scrollbar-width: thin;
+  scrollbar-color: #ccc #f5f5f5;
+}
+
+/* Custom Scrollbar for Webkit browsers */
+.modal-body::-webkit-scrollbar {
+  width: 8px;
+}
+
+.modal-body::-webkit-scrollbar-track {
+  background: #f5f5f5;
+  border-radius: 4px;
+}
+
+.modal-body::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 4px;
+}
+
+.modal-body::-webkit-scrollbar-thumb:hover {
+  background: #999;
+}
+
+/* Form Sections */
+.form-section {
+  margin-bottom: 32px;
+}
+
+.form-section:last-child {
+  margin-bottom: 0;
+}
+
+.form-section h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+/* Form Groups */
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  font-size: 14px;
+  color: #333;
+  background-color: #fff;
+  transition: all 0.2s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: #0066ff;
+  box-shadow: 0 0 0 3px rgba(0, 102, 255, 0.1);
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+  color: #999;
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 80px;
+  font-family: inherit;
+}
+
+/* Form Row */
+.form-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+/* Images Section */
+.images-section {
+  margin-bottom: 20px;
+}
+
+.field-hint {
+  font-size: 13px;
+  color: #666;
+  margin: 8px 0 16px 0;
+}
+
+/* Image Upload Grid */
+.image-upload-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.image-upload-box {
+  position: relative;
+  aspect-ratio: 1;
+}
+
+.file-input {
+  display: none;
+}
+
+.upload-placeholder {
+  width: 100%;
+  height: 100%;
+  border: 2px dashed #e0e0e0;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  background-color: #f8f9fa;
+  transition: all 0.2s ease;
+}
+
+.upload-placeholder:hover {
+  border-color: #0066ff;
+  background-color: #f0f7ff;
+}
+
+.upload-placeholder i {
+  font-size: 32px;
+  color: #999;
+  margin-bottom: 8px;
+}
+
+.upload-placeholder span {
+  font-size: 14px;
+  color: #666;
+  font-weight: 500;
+}
+
+.upload-placeholder .upload-hint {
+  font-size: 12px;
+  color: #999;
+  font-weight: 400;
+}
+
+.image-preview-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid #e0e0e0;
+}
+
+.image-preview-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.remove-image-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 30px;
+  height: 30px;
+  background-color: rgba(255, 255, 255, 0.9);
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  transition: all 0.2s ease;
+}
+
+.remove-image-btn:hover {
+  background-color: #ff4444;
+  color: white;
+  transform: scale(1.1);
+}
+
+.remove-image-btn i {
+  font-size: 14px;
+}
+
+/* Modal Footer - Fixed */
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 24px;
+  border-top: 1px solid #e0e0e0;
+  background: white;
+  border-radius: 0 0 12px 12px;
+  position: sticky;
+  bottom: 0;
+  z-index: 10;
+}
+
+.cancel-btn {
+  padding: 10px 24px;
+  background: none;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  color: #666;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.cancel-btn:hover {
+  background-color: #f5f7fa;
+  border-color: #ccc;
+}
+
+.save-btn {
+  padding: 10px 24px;
+  background-color: #0066ff;
+  border: none;
+  border-radius: 6px;
+  color: white;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.save-btn:hover:not(:disabled) {
+  background-color: #0052cc;
+}
+
+.save-btn:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .modal-overlay {
+    padding: 0;
+    align-items: flex-start;
+  }
+
+  .modal-content {
+    max-width: 100%;
+    border-radius: 0;
+    margin: 0;
+  }
+
+  .modal-header {
+    border-radius: 0;
+    padding: 16px;
+  }
+
+  .modal-header h2 {
+    font-size: 20px;
+  }
+
+  .modal-body {
+    padding: 16px;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .image-upload-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .modal-footer {
+    padding: 16px;
+    border-radius: 0;
+    flex-direction: column-reverse;
+  }
+
+  .cancel-btn,
+  .save-btn {
+    width: 100%;
+  }
+
+  .form-section h3 {
+    font-size: 16px;
+  }
+}
+
+/* Small height screens */
+@media (max-height: 700px) {
+  
+  .modal-header {
+    padding: 16px 24px;
+  }
+  
+  .modal-footer {
+    padding: 16px 24px;
+  }
+}
+/* Add this to your add-edit-property.component.css */
+
+/* Spinner in button */
+.save-btn .fa-spinner {
+  margin-right: 0.5rem;
+}
+
+.save-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Loading overlay for form */
+.modal-content.loading::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.7);
+  z-index: 10;
+}
+/* Add these styles to your existing add-edit-property.component.css */
+
+/* ENHANCED: Error Message Styles */
+.general-error-message {
+  background-color: #fee;
+  border: 1px solid #fcc;
+  border-radius: 6px;
+  padding: 12px 16px;
+  margin-bottom: 20px;
+  color: #c53030;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.general-error-message i {
+  color: #e53e3e;
+  font-size: 16px;
+}
+
+.field-error {
+  color: #e53e3e;
+  font-size: 12px;
+  margin-top: 4px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  line-height: 1.4;
+}
+
+.field-error::before {
+  content: "⚠";
+  font-size: 12px;
+  color: #e53e3e;
+}
+
+/* Enhanced Input Error States */
+.form-group input.error,
+.form-group select.error,
+.form-group textarea.error {
+  border-color: #e53e3e;
+  box-shadow: 0 0 0 1px #e53e3e;
+  background-color: #fef5f5;
+}
+
+.form-group input.error:focus,
+.form-group select.error:focus,
+.form-group textarea.error:focus {
+  border-color: #e53e3e;
+  box-shadow: 0 0 0 2px rgba(229, 62, 62, 0.2);
+  outline: none;
+}
+
+/* Field Hint Styling */
+.field-hint {
+  font-size: 12px;
+  color: #718096;
+  margin-top: 4px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  line-height: 1.4;
+}
+
+.field-hint i {
+  color: #4299e1;
+  font-size: 12px;
+}
+
+/* Enhanced Form Group Spacing */
+.form-group {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.form-group.has-error {
+  margin-bottom: 24px;
+}
+
+/* Success State (Optional) */
+.form-group input.success,
+.form-group select.success,
+.form-group textarea.success {
+  border-color: #38a169;
+  box-shadow: 0 0 0 1px #38a169;
+}
+
+/* Enhanced Label Styling */
+.form-group label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 500;
+  color: #2d3748;
+  font-size: 14px;
+}
+
+.form-group label.required::after {
+  content: " *";
+  color: #e53e3e;
+}
+
+/* Enhanced Button States */
+.save-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background: #a0aec0;
+}
+
+.cancel-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Video Link Specific Styling */
+#videoLink {
+  transition: all 0.2s ease;
+}
+
+#videoLink:focus {
+  border-color: #4299e1;
+  box-shadow: 0 0 0 2px rgba(66, 153, 225, 0.2);
+}
+
+#videoLink::placeholder {
+  font-size: 13px;
+  color: #a0aec0;
+}
+
+/* Enhanced Image Upload Error State */
+.image-upload-grid.error {
+  border: 2px dashed #e53e3e;
+  border-radius: 8px;
+  padding: 8px;
+  background-color: #fef5f5;
+}
+
+/* Responsive Error Messages */
+@media (max-width: 768px) {
+  .general-error-message {
+    padding: 10px 12px;
+    font-size: 13px;
+  }
+  
+  .field-error {
+    font-size: 11px;
+  }
+  
+  .field-hint {
+    font-size: 11px;
+  }
+}
+
+/* Error Animation */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-2px); }
+  20%, 40%, 60%, 80% { transform: translateX(2px); }
+}
+
+.form-group input.error,
+.form-group select.error,
+.form-group textarea.error {
+  animation: shake 0.5s ease-in-out;
+}
+
+/* Enhanced Modal Styling */
+.modal-content {
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+/* Scrollbar Styling for Modal */
+.modal-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.modal-content::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.modal-content::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 3px;
+}
+
+.modal-content::-webkit-scrollbar-thumb:hover {
+  background: #a1a1a1;
+}
+
+/* Error Focus Management */
+.form-group input.error:focus + .field-error,
+.form-group select.error:focus + .field-error,
+.form-group textarea.error:focus + .field-error {
+  color: #c53030;
+  font-weight: 500;
+}

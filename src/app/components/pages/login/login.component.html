@@ -1,0 +1,60 @@
+<div class="auth-container">
+  <div class="auth-form">
+    <h2 class="auth-title">Login to Your Account</h2>
+    
+    <!-- Error message display -->
+    <div *ngIf="loginError" class="error-banner">
+      {{ loginError }}
+    </div>
+    
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="email" class="form-label">Username or Email</label>
+        <input
+          id="email"
+          type="email" 
+          formControlName="email"
+          class="form-input"
+          placeholder="Email"
+          [class.error]="email?.invalid && email?.touched"
+        />
+        <div *ngIf="email?.invalid && email?.touched" class="error-message">
+          <span *ngIf="email?.errors?.['required']">Email is required</span>
+          <span *ngIf="email?.errors?.['email']">Please enter a valid email</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="password" class="form-label">Password</label>
+        <input
+          id="password"
+          type="password"
+          formControlName="password"
+          class="form-input"
+          placeholder="Password"
+          [class.error]="password?.invalid && password?.touched"
+        />
+        <div *ngIf="password?.invalid && password?.touched" class="error-message">
+          <span *ngIf="password?.errors?.['required']">Password is required</span>
+          <span *ngIf="password?.errors?.['minlength']">Password must be at least 6 characters</span>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button 
+          type="submit" 
+          class="submit-btn btn-gradient" 
+          [disabled]="loginForm.invalid || isSubmitting">
+          <span *ngIf="!isSubmitting">Submit</span>
+          <span *ngIf="isSubmitting">Logging in...</span>
+        </button>
+        <button 
+          type="button" 
+          class="forgot-password-btn"
+          (click)="navigateToRegister()">
+          New Here? Sign Up
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

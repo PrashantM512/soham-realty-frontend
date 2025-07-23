@@ -1,0 +1,953 @@
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: white;
+    z-index: 1000;
+    transition: box-shadow 0.3s ease;
+  }
+  
+  header.scrolled {
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  }
+  
+  .navbar {
+    background-color: white;
+    padding: 0 5%;
+  }
+  
+  .nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 80px;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  
+  /* Logo */
+  .logo {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: #333;
+    font-size: 24px;
+    font-weight: 700;
+    gap: 10px;
+  }
+  
+  .logo i {
+    font-size: 28px;
+  }
+  
+  /* Navigation Menu */
+  .nav-menu {
+    display: flex;
+    align-items: center;
+  }
+  
+  .nav-list {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    gap: 40px;
+  }
+  
+  .nav-item {
+    position: relative;
+  }
+  
+  .nav-link {
+    text-decoration: none;
+    color: #333;
+    font-size: 16px;
+    font-weight: 500;
+    transition: color 0.3s ease;
+    padding: 5px 0;
+  }
+  
+  .nav-link:hover,
+  .nav-link.active {
+    color: #0066ff;
+  }
+  
+  /* Profile Icon */
+  .nav-profile {
+    display: flex;
+    align-items: center;
+  }
+  
+  .profile-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    overflow: hidden;
+    cursor: pointer;
+    border: 2px solid #f0f0f0;
+    transition: border-color 0.3s ease;
+  }
+  
+  .profile-icon:hover {
+    border-color: #0066ff;
+  }
+  
+  .profile-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  /* Mobile Menu Toggle */
+  .mobile-toggle {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+  }
+  
+  .bar {
+    width: 25px;
+    height: 3px;
+    background-color: #333;
+    margin: 3px 0;
+    transition: 0.3s;
+  }
+
+  /* Add to your header.component.css */
+.logo-text {
+    font-family: 'Montserrat', sans-serif; /* Professional, clean font */
+    font-weight: 700; /* Bold weight */
+    font-size: 1.5rem; /* Responsive size */
+    color: #0a4d9c; /* Deep blue - common for real estate */
+    text-transform: uppercase; /* Makes it look more professional */
+    letter-spacing: 1px; /* Improves readability */
+    margin-left: 10px;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.1); /* Subtle depth */
+    transition: all 0.3s ease; /* Smooth hover effect */
+  }
+  
+  .logo-container:hover .logo-text {
+    color: #082e5c; /* Slightly darker on hover */
+    text-shadow: 0 2px 4px rgba(0,0,0,0.15);
+  }
+
+  /* Additional styling options */
+.logo-container {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    padding: 10px 0;
+  }
+  
+  .logo-text {
+    position: relative;
+    padding-left: 15px;
+  }
+  
+  .logo-text::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 60%;
+    width: 2px;
+    background: linear-gradient(to bottom, #0a4d9c, #4da1ff);
+  }
+  
+  /* Mobile Styles */
+  @media screen and (max-width: 768px) {
+    .nav-container {
+      padding: 0 20px;
+    }
+
+    .logo-container{
+      margin-left: -10px;
+      gap: 0px;
+    }
+    
+  
+    .nav-menu {
+      position: fixed;
+      left: -100%;
+      top: 80px;
+      flex-direction: column;
+      background-color: white;
+      width: 100%;
+      text-align: center;
+      transition: 0.3s;
+      box-shadow: 0 10px 27px rgba(0, 0, 0, 0.05);
+    }
+  
+    .nav-menu.active {
+      left: 0;
+    }
+  
+    .nav-list {
+      flex-direction: column;
+      gap: 0;
+      width: 100%;
+    }
+  
+    .nav-item {
+      width: 100%;
+    }
+  
+    .nav-link {
+      display: block;
+      padding: 15px;
+      width: 100%;
+      transition: background-color 0.3s ease;
+    }
+  
+    .nav-link:hover {
+      background-color: #f8f9fa;
+    }
+  
+    .mobile-toggle {
+      display: flex;
+    }
+  
+    .nav-profile {
+      position: absolute;
+      right: 60px;
+    }
+  }
+  .logo-container {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+  }
+  
+  .navbar-logo {
+    height: auto;       /* Maintain aspect ratio */
+    max-height: 50px;   /* Maximum height you want */
+    width: auto;        /* Maintain aspect ratio */
+    max-width: 150px;   /* Maximum width you want */
+    object-fit: contain; /* Ensures image fits properly */
+  }
+  
+  .logo-text {
+    margin-left: 10px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #333; /* Adjust to match your design */
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .navbar-logo {
+      max-height: 40px;
+      max-width: 120px;
+    }
+    .logo-text {
+      font-size: 1rem;
+    }
+  }
+  
+  @media (max-width: 576px) {
+    .navbar-logo {
+      max-height: 30px;
+      max-width: 100px;
+    }
+    .logo-text {
+      font-size: 0.9rem;
+    }
+    .logo-text {
+        font-size: 1rem; /* Responsive size */
+    }
+  }
+  /* Profile Dropdown */
+.profile-dropdown {
+    position: relative;
+  }
+  
+  .profile-dropdown:hover .dropdown-content {
+    display: block;
+  }
+  
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 100%;
+    margin-top: 10px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    min-width: 150px;
+    overflow: hidden;
+  }
+  
+  .dropdown-content a,
+  .dropdown-content button {
+    display: block;
+    width: 100%;
+    padding: 12px 20px;
+    text-align: left;
+    background: none;
+    border: none;
+    color: #333;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  
+  .dropdown-content a:hover,
+  .dropdown-content button:hover {
+    background-color: #f5f7fa;
+  }
+  
+  .login-link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background-color: #0066ff;
+    color: white;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: background-color 0.3s ease;
+  }
+  
+  .login-link:hover {
+    background-color: #0052cc;
+  }
+  a.logo-container:focus {
+    outline: none;
+    box-shadow: none;
+  }
+
+  .logo-container {
+    user-select: none;
+    cursor: pointer;
+  }
+  .logo-container span {
+    user-select: none;
+  }
+
+  /* Add these styles to your header.component.css */
+
+/* Sign In Link Responsive Styles */
+.login-link {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  color: #ffff;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.login-link:hover {
+  color: #dfefff;
+}
+
+.login-link i {
+  font-size: 1.1rem;
+}
+
+.login-link span {
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+/* Tablet styles */
+@media (max-width: 1024px) {
+  .login-link {
+    padding: 0.4rem 0.8rem;
+  }
+  
+  .login-link span {
+    font-size: 0.9rem;
+  }
+}
+
+/* Mobile styles */
+@media (max-width: 768px) {
+  .nav-profile {
+    margin-left: auto;
+    margin-right: 1rem;
+  }
+  
+  .login-link {
+    padding: 0.4rem 0.6rem;
+  }
+  
+  .login-link span {
+    display: none; /* Hide text on mobile, show only icon */
+  }
+  
+  .login-link i {
+    font-size: 1.3rem;
+  }
+}
+
+/* Small mobile styles */
+@media (max-width: 480px) {
+  .login-link {
+    padding: 0.3rem 0.5rem;
+  }
+  
+  .login-link i {
+    font-size: 1.2rem;
+  }
+}
+/* Add this to your existing CSS */
+
+/* Hide mobile logout button on desktop */
+.mobile-logout {
+  display: none;
+}
+
+/* Show desktop logout button on desktop */
+.desktop-logout {
+  display: block;
+}
+
+/* Mobile Styles */
+@media screen and (max-width: 768px) {
+  /* Hide desktop logout button on mobile */
+  .desktop-logout {
+    display: none;
+  }
+  
+  /* Show mobile logout button in the menu */
+  .mobile-logout {
+    display: block;
+    border-top: 1px solid #f0f0f0;
+    margin-top: 10px;
+    padding-top: 10px;
+  }
+  
+  /* Style the mobile logout button */
+  .mobile-logout .nav-link {
+    color: #e74c3c !important; /* Red color for logout */
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .mobile-logout .nav-link:hover {
+    background-color: #fff5f5;
+  }
+  
+  .mobile-logout .nav-link:before {
+    content: "\f2f5"; /* FontAwesome logout icon */
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    margin-right: 8px;
+  }
+  
+  /* Adjust profile positioning */
+  .nav-profile {
+    position: absolute;
+    right: 60px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+}
+/* Add this to your existing CSS */
+
+/* Hide mobile auth buttons on desktop */
+.mobile-logout,
+.mobile-signin {
+  display: none;
+}
+
+/* Show desktop auth buttons on desktop */
+.desktop-logout,
+.desktop-signin {
+  display: block;
+}
+
+/* Mobile Styles */
+@media screen and (max-width: 768px) {
+  /* Hide desktop auth buttons on mobile */
+  .desktop-logout,
+  .desktop-signin {
+    display: none;
+  }
+  
+  /* Show mobile auth buttons in the menu */
+  .mobile-logout,
+  .mobile-signin {
+    display: block;
+  }
+  
+  /* Style the mobile auth buttons */
+  .mobile-logout,
+  .mobile-signin {
+    border-top: 1px solid #f0f0f0;
+    padding: 15px;
+    text-align: center;
+  }
+  
+  /* Logout specific styling */
+  .mobile-logout .nav-link {
+    color: #e74c3c !important; /* Red color for logout */
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  /* Sign-in specific styling */
+  .mobile-signin .nav-link {
+    color: #0066ff !important;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .mobile-logout .nav-link:hover,
+  .mobile-signin .nav-link:hover {
+    background-color: #f8f9fa;
+  }
+  
+  /* Add icons */
+  .mobile-logout .nav-link:before {
+    content: "\f2f5"; /* FontAwesome logout icon */
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    margin-right: 8px;
+  }
+  
+  .mobile-signin .nav-link:before {
+    content: "\f2f6"; /* FontAwesome sign-in icon */
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    margin-right: 8px;
+  }
+  
+  /* Adjust profile positioning */
+  .nav-profile {
+    position: absolute;
+    right: 60px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+}
+/* Bootstrap-style red logout button */
+.desktop-logout .login-link {
+  background-color: #dc3545; /* Bootstrap danger red */
+  color: white;
+  border: none;
+  padding: 9px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  text-decoration: none;
+}
+
+.desktop-logout .login-link:hover {
+  background-color: #c82333; /* Darker red on hover */
+  color: white;
+}
+
+.desktop-logout .login-link:active {
+  background-color: #bd2130; /* Even darker when pressed */
+  transform: translateY(1px);
+}
+
+.desktop-logout .login-link i {
+  font-size: 14px;
+}
+
+/* Header Styles */
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: white;
+  z-index: 1000;
+  transition: box-shadow 0.3s ease;
+}
+
+header.scrolled {
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+}
+
+.navbar {
+  background-color: white;
+  padding: 0 5%;
+}
+
+.nav-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 80px;
+  max-width: 1400px;
+  margin: 0 auto;
+  position: relative;
+}
+
+/* Logo Styles */
+.logo-container {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: #333;
+  font-size: 24px;
+  font-weight: 700;
+  gap: 10px;
+  user-select: none;
+  cursor: pointer;
+  z-index: 1001;
+}
+
+.logo-container:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+.navbar-logo {
+  height: auto;
+  max-height: 50px;
+  width: auto;
+  max-width: 150px;
+  object-fit: contain;
+}
+
+.logo-text {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 1.5rem;
+  color: #0a4d9c;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-left: 10px;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+  position: relative;
+  padding-left: 15px;
+}
+
+.logo-text::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 60%;
+  width: 2px;
+  background: linear-gradient(to bottom, #0a4d9c, #4da1ff);
+}
+
+.logo-container:hover .logo-text {
+  color: #082e5c;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.15);
+}
+
+/* Navigation Menu */
+.nav-menu {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  justify-content: center;
+}
+
+.nav-list {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  gap: 40px;
+  align-items: center;
+}
+
+.nav-item {
+  position: relative;
+}
+
+.nav-link {
+  text-decoration: none;
+  color: #333;
+  font-size: 16px;
+  font-weight: 500;
+  transition: color 0.3s ease;
+  padding: 5px 0;
+}
+
+.nav-link:hover,
+.nav-link.active {
+  color: #0066ff;
+}
+
+/* Auth Section */
+.nav-auth {
+  display: flex;
+  align-items: center;
+}
+
+/* Login/Logout Button Styles */
+.login-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background-color: #0066ff;
+  color: white;
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
+  border: none;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.login-link:hover {
+  background-color: #0052cc;
+  color: white;
+}
+
+/* Bootstrap-style red logout button */
+.desktop-logout .login-link {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 9px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  text-decoration: none;
+}
+
+.desktop-logout .login-link:hover {
+  background-color: #c82333;
+  color: white;
+}
+
+.desktop-logout .login-link:active {
+  background-color: #bd2130;
+  transform: translateY(1px);
+}
+
+/* Mobile Menu Toggle */
+.mobile-toggle {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+  padding: 5px;
+  z-index: 1001;
+  position: relative;
+}
+
+.bar {
+  width: 25px;
+  height: 3px;
+  background-color: #333;
+  margin: 3px 0;
+  transition: 0.3s;
+  border-radius: 2px;
+}
+
+/* Mobile Menu Animation */
+.mobile-toggle .bar.active:nth-child(1) {
+  transform: rotate(-45deg) translate(-6px, 6px);
+}
+
+.mobile-toggle .bar.active:nth-child(2) {
+  opacity: 0;
+}
+
+.mobile-toggle .bar.active:nth-child(3) {
+  transform: rotate(45deg) translate(-6px, -6px);
+}
+
+/* Hide mobile auth buttons on desktop */
+.mobile-logout,
+.mobile-signin {
+  display: none;
+}
+
+/* Show desktop auth buttons on desktop */
+.desktop-logout,
+.desktop-signin {
+  display: block;
+}
+
+/* Mobile Responsive Styles */
+@media screen and (max-width: 768px) {
+  .nav-container {
+    padding: 0 20px;
+    height: 70px;
+  }
+
+  /* Logo adjustments for mobile */
+  .navbar-logo {
+    max-height: 40px;
+    max-width: 120px;
+  }
+
+  .logo-text {
+    font-size: 1rem;
+  }
+  .logo-container{
+    gap: 0px;
+  }
+
+  /* Hide desktop navigation and auth */
+  .nav-menu {
+    position: fixed;
+    left: -100%;
+    top: 70px;
+    flex-direction: column;
+    background-color: white;
+    width: 100%;
+    text-align: center;
+    transition: 0.3s;
+    box-shadow: 0 10px 27px rgba(0, 0, 0, 0.05);
+    height: calc(100vh - 70px);
+    overflow-y: auto;
+    justify-content: flex-start;
+    padding-top: 20px;
+  }
+
+  .nav-menu.active {
+    left: 0;
+  }
+
+  .nav-list {
+    flex-direction: column;
+    gap: 0;
+    width: 100%;
+  }
+
+  .nav-item {
+    width: 100%;
+  }
+
+  .nav-link {
+    display: block;
+    padding: 15px;
+    width: 100%;
+    transition: background-color 0.3s ease;
+  }
+
+  .nav-link:hover {
+    background-color: #f8f9fa;
+  }
+
+  /* Show mobile toggle */
+  .mobile-toggle {
+    display: flex;
+  }
+
+  /* Hide desktop auth buttons on mobile */
+  .desktop-logout,
+  .desktop-signin {
+    display: none;
+  }
+
+  /* Show mobile auth buttons in the menu */
+  .mobile-logout,
+  .mobile-signin {
+    display: block;
+  }
+
+  /* Style the mobile auth buttons */
+  .mobile-logout,
+  .mobile-signin {
+    border-top: 1px solid #f0f0f0;
+    padding: 15px;
+    text-align: center;
+    margin-top: 20px;
+  }
+
+  /* Logout specific styling */
+  .mobile-logout .nav-link {
+    color: #e74c3c !important;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Sign-in specific styling */
+  .mobile-signin .nav-link {
+    color: #0066ff !important;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .mobile-logout .nav-link:hover,
+  .mobile-signin .nav-link:hover {
+    background-color: #f8f9fa;
+  }
+
+  /* Add icons */
+  .mobile-logout .nav-link:before {
+    content: "\f2f5";
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    margin-right: 8px;
+  }
+
+  .mobile-signin .nav-link:before {
+    content: "\f2f6";
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    margin-right: 8px;
+  }
+}
+
+/* Small mobile styles */
+@media (max-width: 576px) {
+  .nav-container {
+    padding: 0 15px;
+    height: 65px;
+  }
+
+  .navbar-logo {
+    max-height: 30px;
+    max-width: 100px;
+  }
+
+  .logo-text {
+    font-size: 0.9rem;
+  }
+
+  .nav-menu {
+    top: 65px;
+    height: calc(100vh - 65px);
+  }
+}
+
+/* Very small mobile styles */
+@media (max-width: 480px) {
+  .nav-container {
+    padding: 0 10px;
+  }
+
+  .logo-text {
+    font-size: 0.8rem;
+  }
+}
+
