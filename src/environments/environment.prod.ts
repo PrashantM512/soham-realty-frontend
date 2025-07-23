@@ -1,5 +1,5 @@
 export const environment = {
     production: true,
-    apiUrl: '/api'
+    apiUrl: 'https://soham-realty-backend.onrender.com/api'
 
   };
