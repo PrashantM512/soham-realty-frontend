@@ -9,34 +9,20 @@ export class ImageUrlPipe implements PipeTransform {
   transform(value: string | null | undefined): string {
     // Handle null/undefined values
     if (!value) {
-      return 'assets/images/no-image-available.png'; // Make sure you have this default image
+      return 'assets/images/no-image-available.png';
     }
 
-    // Fix the incorrect URL format from database
-    // Example: /api/files/http://res.cloudinary.com/daz7kufro/image/upload/v1753345678/bh6dsypl2yjqe2ytyhav.png
-    if (value.includes('/api/files/http')) {
-      // Extract the Cloudinary URL
-      const cloudinaryUrl = value.substring(value.indexOf('http'));
-      return cloudinaryUrl;
-    }
-
-    // Handle direct Cloudinary URLs
+    // Handle direct Cloudinary URLs (prod)
     if (value.includes('cloudinary.com')) {
-      // Remove any /api/files/ prefix if present
-      return value.replace('/api/files/', '');
-    }
-
-    // Handle full URLs (http or https)
-    if (value.startsWith('http://') || value.startsWith('https://')) {
       return value;
     }
 
-    // Handle local file references (for backward compatibility)
+    // Handle local file references (dev)
     if (value.startsWith('/api/files/')) {
       return `${environment.apiUrl}${value}`;
     }
 
-    // Default case - assume it's a relative path
+    // Handle filenames without prefix (legacy or dev)
     return `${environment.apiUrl}/api/files/${value}`;
   }
 }

@@ -102,11 +102,13 @@ export class PropertyService {
   uploadPropertyImages(propertyId: number, files: File[]): Observable<ApiResponse<string[]>> {
     const formData = new FormData();
     files.forEach(file => {
-      formData.append('images', file);
+      formData.append('files', file); // Match backend endpoint parameter
     });
 
-    return this.http.post<ApiResponse<string[]>>(`${this.apiUrl}/${propertyId}/images`, formData);
-  }
+    return this.http.post<ApiResponse<string[]>>(`${this.apiUrl}/${propertyId}/images`, formData, {
+      headers: { 'Accept': 'application/json' }
+    });
+}
 
   private clearCache(): void {
     this.featuredPropertiesCache$.next([]);
