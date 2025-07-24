@@ -6,23 +6,19 @@ import { environment } from '../../environments/environment';
   standalone: true
 })
 export class ImageUrlPipe implements PipeTransform {
-  transform(value: string | null | undefined): string {
-    // Handle null/undefined values
-    if (!value) {
-      return 'assets/images/no-image-available.png';
+  transform(imageUrl: string | null): string {
+    if (!imageUrl) {
+      return '';
     }
-
-    // Handle direct Cloudinary URLs (prod)
-    if (value.includes('cloudinary.com')) {
-      return value;
+    // Return data URLs (for previews) unchanged
+    if (imageUrl.startsWith('data:image/')) {
+      return imageUrl;
     }
-
-    // Handle local file references (dev)
-    if (value.startsWith('/api/files/')) {
-      return `${environment.apiUrl}${value}`;
+    // Return full URLs (e.g., Cloudinary) unchanged
+    if (imageUrl.startsWith('http')) {
+      return imageUrl;
     }
-
-    // Handle filenames without prefix (legacy or dev)
-    return `${environment.apiUrl}/api/files/${value}`;
+    // For dev environment, prepend the API URL
+    return `${environment.apiUrl}/files/${imageUrl}`;
   }
 }

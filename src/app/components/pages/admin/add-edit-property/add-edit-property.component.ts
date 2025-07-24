@@ -1,10 +1,10 @@
 // add-edit-property.component.ts - FIXED TYPE ERRORS
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule, NgForm } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { Property } from '../../../../models/property.model';
 import { PropertyService } from '../../../../services/property.service';
-import { ImageUrlPipe } from "../../../../pipes/image-url-pipe.pipe";
+import { ImageUrlPipe } from '../../../../pipes/image-url-pipe.pipe';
 
 @Component({
   selector: 'app-add-edit-property',
@@ -37,13 +37,10 @@ export class AddEditPropertyComponent implements OnInit {
     featured: false
   };
 
-  propertyTypes = ['Row House', 'Flat', 'Apartment', 'Condo', 'Farm house', 'Villa', 'Studio Apartment', 'Penthouse', 'Loft', 'Row House', 'Bungalow', 'Independent House'];
+  propertyTypes = ['Row House', 'Flat', 'Apartment', 'Condo', 'Farm house', 'Villa', 'Studio Apartment', 'Penthouse', 'Loft', 'Bungalow', 'Independent House'];
   statusOptions = ['Available', 'Sold'];
-  // In your TS (e.g. contact.component.ts)
-cities = ['Pune','Mumbai','Delhi','Bangalore','Chennai','Hyderabad', 'Kolkata', 'Ahmedabad', 'Jaipur', 'Chandigarh', 'Lucknow', 'Nagpur', 'Indore', 'Coimbatore', 'Visakhapatnam', 'Patna', 'Bhopal', 'Vadodara', 'Surat', 'Nashik'];
+  cities = ['Pune', 'Mumbai', 'Delhi', 'Bangalore', 'Chennai', 'Hyderabad', 'Kolkata', 'Ahmedabad', 'Jaipur', 'Chandigarh', 'Lucknow', 'Nagpur', 'Indore', 'Coimbatore', 'Visakhapatnam', 'Patna', 'Bhopal', 'Vadodara', 'Surat', 'Nashik'];
 
-  
-  // Image management arrays
   selectedFiles: (File | null)[] = [];
   imagePreviews: (string | null)[] = [];
   existingImages: (string | null)[] = [];
@@ -51,7 +48,6 @@ cities = ['Pune','Mumbai','Delhi','Bangalore','Chennai','Hyderabad', 'Kolkata', 
   maxImages = 5;
   isSubmitting = false;
 
-  // Validation tracking
   backendErrors: { [key: string]: string } = {};
   generalError: string = '';
   formSubmitted = false;
@@ -102,11 +98,8 @@ cities = ['Pune','Mumbai','Delhi','Bangalore','Chennai','Hyderabad', 'Kolkata', 
     this.imageStates = new Array(this.maxImages).fill('removed');
   }
 
-  // FIXED: Proper type handling for field changes
   onFieldChange(fieldName: string, value: any): void {
-    // FIXED: Handle different field types properly
-    let processedValue = value;
-    
+    let processedValue: any;
     switch (fieldName) {
       case 'price':
       case 'bedrooms':
@@ -120,17 +113,13 @@ cities = ['Pune','Mumbai','Delhi','Bangalore','Chennai','Hyderabad', 'Kolkata', 
       default:
         processedValue = value || '';
     }
-    
     this.formData[fieldName] = processedValue;
     this.validateField(fieldName, processedValue);
-    
-    // Clear backend error for this field when user starts typing
     if (this.backendErrors[fieldName]) {
       delete this.backendErrors[fieldName];
     }
   }
 
-  // FIXED: Proper event handling for input events
   onInputChange(event: Event, fieldName: string): void {
     const target = event.target as HTMLInputElement;
     if (target) {
@@ -138,7 +127,6 @@ cities = ['Pune','Mumbai','Delhi','Bangalore','Chennai','Hyderabad', 'Kolkata', 
     }
   }
 
-  // FIXED: Proper event handling for select events
   onSelectChange(event: Event, fieldName: string): void {
     const target = event.target as HTMLSelectElement;
     if (target) {
@@ -146,7 +134,6 @@ cities = ['Pune','Mumbai','Delhi','Bangalore','Chennai','Hyderabad', 'Kolkata', 
     }
   }
 
-  // FIXED: Proper event handling for textarea events
   onTextareaChange(event: Event, fieldName: string): void {
     const target = event.target as HTMLTextAreaElement;
     if (target) {
@@ -154,7 +141,6 @@ cities = ['Pune','Mumbai','Delhi','Bangalore','Chennai','Hyderabad', 'Kolkata', 
     }
   }
 
-  // FIXED: Proper event handling for radio buttons
   onRadioChange(fieldName: string, value: boolean): void {
     this.onFieldChange(fieldName, value);
   }
@@ -164,108 +150,94 @@ cities = ['Pune','Mumbai','Delhi','Bangalore','Chennai','Hyderabad', 'Kolkata', 
     this.validateField(fieldName, this.formData[fieldName]);
   }
 
-  // FIXED: Enhanced validation with proper type checking
   private validateField(fieldName: string, value: any): void {
     this.fieldErrors[fieldName] = '';
-
     switch (fieldName) {
       case 'title':
-        if (!value || String(value).trim().length === 0) {
+        if (!value.trim()) {
           this.fieldErrors[fieldName] = 'Title is required';
-        } else if (String(value).length < 5) {
+        } else if (value.length < 5) {
           this.fieldErrors[fieldName] = 'Title must be at least 5 characters';
-        } else if (String(value).length > 200) {
+        } else if (value.length > 200) {
           this.fieldErrors[fieldName] = 'Title cannot exceed 200 characters';
         }
         break;
-
       case 'price':
-        const priceValue = Number(value);
-        if (!value || priceValue <= 0) {
-          this.fieldErrors[fieldName] = 'Price is required and must be greater than 0';
-        } else if (priceValue < 1000) {
+        const p = Number(value);
+        if (p <= 0) {
+          this.fieldErrors[fieldName] = 'Price must be greater than 0';
+        } else if (p < 1000) {
           this.fieldErrors[fieldName] = 'Price must be at least ₹1,000';
-        } else if (priceValue > 999999999) {
+        } else if (p > 999999999) {
           this.fieldErrors[fieldName] = 'Price cannot exceed ₹999,999,999';
         }
         break;
-
       case 'description':
-        if (value && String(value).length > 1000) {
+        if (value && value.length > 1000) {
           this.fieldErrors[fieldName] = 'Description cannot exceed 1000 characters';
         }
         break;
-
       case 'address':
-        if (!value || String(value).trim().length === 0) {
+        if (!value.trim()) {
           this.fieldErrors[fieldName] = 'Address is required';
-        } else if (String(value).length < 5) {
+        } else if (value.length < 5) {
           this.fieldErrors[fieldName] = 'Address must be at least 5 characters';
-        } else if (String(value).length > 200) {
+        } else if (value.length > 200) {
           this.fieldErrors[fieldName] = 'Address cannot exceed 200 characters';
         }
         break;
-
       case 'city':
-        if (!value || String(value).trim().length === 0) {
+        if (!value.trim()) {
           this.fieldErrors[fieldName] = 'City is required';
-        } else if (String(value).length < 2) {
+        } else if (value.length < 2) {
           this.fieldErrors[fieldName] = 'City must be at least 2 characters';
-        } else if (!/^[a-zA-Z\s]+$/.test(String(value))) {
+        } else if (!/^[a-zA-Z\s]+$/.test(value)) {
           this.fieldErrors[fieldName] = 'City must contain only letters and spaces';
         }
         break;
-
       case 'state':
-        if (!value || String(value).trim().length === 0) {
+        if (!value.trim()) {
           this.fieldErrors[fieldName] = 'State is required';
-        } else if (String(value).length < 2) {
+        } else if (value.length < 2) {
           this.fieldErrors[fieldName] = 'State must be at least 2 characters';
-        } else if (!/^[a-zA-Z\s]+$/.test(String(value))) {
+        } else if (!/^[a-zA-Z\s]+$/.test(value)) {
           this.fieldErrors[fieldName] = 'State must contain only letters and spaces';
         }
         break;
-
       case 'zip':
-        if (!value || String(value).trim().length === 0) {
-          this.fieldErrors[fieldName] = 'ZIP code is required';
-        } else if (!/^\d{6}$/.test(String(value))) {
+        if (!/^[0-9]{6}$/.test(String(value))) {
           this.fieldErrors[fieldName] = 'ZIP code must be exactly 6 digits';
         }
         break;
-
       case 'bedrooms':
-        const bedroomsValue = Number(value);
-        if (bedroomsValue < 0) {
+        const b = Number(value);
+        if (b < 0) {
           this.fieldErrors[fieldName] = 'Bedrooms cannot be negative';
-        } else if (bedroomsValue > 20) {
+        } else if (b > 20) {
           this.fieldErrors[fieldName] = 'Bedrooms cannot exceed 20';
         }
         break;
-
       case 'bathrooms':
-        const bathroomsValue = Number(value);
-        if (bathroomsValue < 0) {
+        const ba = Number(value);
+        if (ba < 0) {
           this.fieldErrors[fieldName] = 'Bathrooms cannot be negative';
-        } else if (bathroomsValue > 20) {
+        } else if (ba > 20) {
           this.fieldErrors[fieldName] = 'Bathrooms cannot exceed 20';
         }
         break;
-
       case 'squareFootage':
-        const squareFootageValue = Number(value);
-        if (squareFootageValue < 0) {
+        const sq = Number(value);
+        if (sq < 0) {
           this.fieldErrors[fieldName] = 'Square footage cannot be negative';
-        } else if (squareFootageValue > 50000) {
+        } else if (sq > 50000) {
           this.fieldErrors[fieldName] = 'Square footage cannot exceed 50,000';
         }
         break;
-
       case 'videoLink':
-        if (value && String(value).trim().length > 0) {
-          const instagramPattern = /^(https?:\/\/)?(www\.)?(instagram\.com|instagr\.am)\/(p|reel|tv)\/[A-Za-z0-9_-]+\/?.*$/;
-          if (!instagramPattern.test(String(value))) {
-            this.fieldErrors[fieldName] = 'Video link must be a valid Instagram URL (posts, reels, or IGTV)';
+        if (value) {
+          const pattern = /^(https?:\/\/)?(www\.)?(instagram\.com|instagr\.am)\/(p|reel|tv)\/[A-Za-z0-9_-]+\/?/;
+          if (!pattern.test(value)) {
+            this.fieldErrors[fieldName] = 'Video link must be a valid Instagram URL';
           }
         }
         break;
@@ -273,50 +245,37 @@ cities = ['Pune','Mumbai','Delhi','Bangalore','Chennai','Hyderabad', 'Kolkata', 
   }
 
   private validateAllFields(): boolean {
-    const fields = ['title', 'price', 'description', 'address', 'city', 'state', 'zip', 'bedrooms', 'bathrooms', 'squareFootage', 'videoLink'];
-    
-    fields.forEach(field => {
-      this.validateField(field, this.formData[field]);
-      this.fieldTouched[field] = true;
-    });
+    ['title', 'price', 'description', 'address', 'city', 'state', 'zip', 'bedrooms', 'bathrooms', 'squareFootage', 'videoLink']
+      .forEach(field => {
+        this.validateField(field, this.formData[field]);
+        this.fieldTouched[field] = true;
+      });
 
-    const hasAtLeastOneImage = this.imagePreviews.some(preview => preview !== null);
-    if (!hasAtLeastOneImage) {
-      this.fieldErrors['images'] = 'At least one image is required';
-    } else {
-      this.fieldErrors['images'] = '';
-    }
+    const hasImage = this.imagePreviews.some(p => p != null);
+    this.fieldErrors['images'] = hasImage ? '' : 'At least one image is required';
 
-    return !Object.values(this.fieldErrors).some(error => error.length > 0);
+    return !Object.values(this.fieldErrors).some(e => e);
   }
 
   shouldShowError(fieldName: string): boolean {
-    return (
-      (this.formSubmitted || this.fieldTouched[fieldName]) && 
-      !!(this.fieldErrors[fieldName] || this.backendErrors[fieldName])
-    ) || !!this.backendErrors[fieldName];
+    return ((this.formSubmitted || this.fieldTouched[fieldName]) && !!(this.fieldErrors[fieldName] || this.backendErrors[fieldName]))
+      || !!this.backendErrors[fieldName];
   }
   
-
   getFieldErrorMessage(fieldName: string): string {
     return this.backendErrors[fieldName] || this.fieldErrors[fieldName] || '';
   }
 
-  // FIXED: Proper event handling for file selection
   onFileSelected(event: Event, index: number): void {
-    const target = event.target as HTMLInputElement;
-    const file = target?.files?.[0];
-    
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0] || null;
     if (file && file.type.startsWith('image/')) {
       this.selectedFiles[index] = file;
-      
       const reader = new FileReader();
-      reader.onload = (e: any) => {
-        this.imagePreviews[index] = e.target.result;
+      reader.onload = e => {
+        this.imagePreviews[index] = (e.target as any).result;
         this.imageStates[index] = 'new';
-        
-        const hasAtLeastOneImage = this.imagePreviews.some(preview => preview !== null);
-        if (hasAtLeastOneImage) {
+        if (this.imagePreviews.some(p => p != null)) {
           this.fieldErrors['images'] = '';
         }
       };
@@ -328,51 +287,32 @@ cities = ['Pune','Mumbai','Delhi','Bangalore','Chennai','Hyderabad', 'Kolkata', 
     this.selectedFiles[index] = null;
     this.imagePreviews[index] = null;
     this.imageStates[index] = 'removed';
-    
-    const hasAtLeastOneImage = this.imagePreviews.some(preview => preview !== null);
-    if (!hasAtLeastOneImage) {
+    if (!this.imagePreviews.some(p => p != null)) {
       this.fieldErrors['images'] = 'At least one image is required';
     }
-    
-    const fileInput = document.getElementById(`image${index}`) as HTMLInputElement;
-    if (fileInput) {
-      fileInput.value = '';
-    }
+    const input = document.getElementById(`image${index}`) as HTMLInputElement;
+    if (input) input.value = '';
   }
 
   onSubmit(): void {
     this.formSubmitted = true;
     this.clearErrors();
-
-    const isClientValidationValid = this.validateAllFields();
-    
-    if (!isClientValidationValid) {
+    if (!this.validateAllFields()) {
       this.scrollToFirstError();
       return;
     }
-
     this.isSubmitting = true;
-
-    const propertyData = { ...this.formData };
-    delete propertyData.images;
-    delete propertyData.id;
-
-    if (this.property) {
-      this.updateExistingProperty(propertyData);
-    } else {
-      this.createNewProperty(propertyData);
-    }
+    const data = {...this.formData}; delete data.images; delete data.id;
+    this.property ? this.updateExistingProperty(data) : this.createNewProperty(data);
   }
 
   private scrollToFirstError(): void {
     setTimeout(() => {
-      const errorFields = Object.keys(this.fieldErrors).filter(key => this.fieldErrors[key]);
-      if (errorFields.length > 0) {
-        const firstErrorField = errorFields[0];
-        const element = document.getElementById(firstErrorField);
-        if (element) {
-          element.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          element.focus();
+      const fields = Object.keys(this.fieldErrors).filter(k => this.fieldErrors[k]);
+      if (fields.length) {
+        const el = document.getElementById(fields[0]);
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth', block: 'center' }); el.focus();
         }
       }
     }, 100);
