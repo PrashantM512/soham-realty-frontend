@@ -295,7 +295,7 @@
                 </div>
                 
                 <div class="image-preview-container" *ngIf="hasImage(index)">
-                  <img [src]="getImagePreview(index)" [alt]="'Preview ' + (index + 1)">
+                  <img [src]="getImagePreview(index) | imageUrl" [alt]="'Preview ' + (index + 1)">
                   <button type="button" class="remove-image-btn" (click)="removeImage(index)">
                     <i class="fas fa-times"></i>
                   </button>

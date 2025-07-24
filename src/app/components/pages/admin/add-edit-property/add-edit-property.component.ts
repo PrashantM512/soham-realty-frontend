@@ -4,11 +4,12 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
 import { Property } from '../../../../models/property.model';
 import { PropertyService } from '../../../../services/property.service';
+import { ImageUrlPipe } from "../../../../pipes/image-url-pipe.pipe";
 
 @Component({
   selector: 'app-add-edit-property',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, ImageUrlPipe],
   templateUrl: './add-edit-property.component.html',
   styleUrl: './add-edit-property.component.css'
 })

@@ -138,6 +138,14 @@ export class PropertyDetailsComponent implements OnInit, OnDestroy {
     this.currentImageIndex = index;
     this.cdr.markForCheck();
   }
+ 
+  previousImage(): void {
+    if (this.property && this.property.images) {
+      this.currentImageIndex = this.currentImageIndex === 0 
+        ? this.property.images.length - 1 
+        : this.currentImageIndex - 1;
+    }
+  }
 
   setActiveTab(tab: string): void {
     this.activeTab = tab;

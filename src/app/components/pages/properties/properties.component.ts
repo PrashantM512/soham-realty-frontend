@@ -11,11 +11,12 @@ import { PRICE_RANGES, PROPERTY_TYPES, CITIES, BEDROOM_OPTIONS, formatPrice } fr
 import { PropertyService } from '../../../services/property.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { ImageUrlPipe } from '../../../pipes/image-url-pipe.pipe';
 
 @Component({
   selector: 'app-properties',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule],
+  imports: [CommonModule, FormsModule, RouterModule,ImageUrlPipe],
   templateUrl: './properties.component.html',
   styleUrl: './properties.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -266,4 +267,24 @@ export class PropertiesComponent implements OnInit, OnDestroy {
   trackByPageNumber(index: number, page: number): number {
     return page;
   }
+
+  onImageError(event: Event): void {
+    const img = event.target as HTMLImageElement;
+    img.src = 'assets/images/no-image-available.png';
+  }
+
+  // Get the primary image URL for a property
+  getPropertyImage(property: Property): string {
+    // Check if property has images array
+    if (property.images && property.images.length > 0) {
+      return property.images[0];
+    }
+    // Check if property has single imageUrl
+    if (property.imageUrl) {
+      return property.imageUrl;
+    }
+    // Return null to trigger default image in pipe
+    return '';
+  }
+
 }

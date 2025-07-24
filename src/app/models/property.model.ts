@@ -15,6 +15,9 @@ export interface Property {
     propertyType: 'Apartment' |'Condo' | 'Independent House' | 'Villa' | 'Studio Apartment' | 'Penthouse' | 'Loft' | 'Row House' | 'Bungalow' | 'Townhouse'| 'House';
     featured?: boolean;
     status?: 'Available' | 'Sold';
-    createdAt?: Date;
-    updatedAt?: Date;
+    imageUrl?: string;        // Single image URL (legacy support)
+  
+  // Timestamps
+  createdAt?: Date;
+  updatedAt?: Date;
   }

@@ -135,7 +135,7 @@
         <div *ngFor="let property of displayedProperties; trackBy: trackByPropertyId" class="property-card"
           [routerLink]="['/properties', property.id]">
           <div class="property-image">
-            <img [src]="property.images[0]" [alt]="property.title" loading="lazy">
+            <img [src]="property.images[0] | imageUrl" [alt]="property.title" loading="lazy">
             <span class="property-type-badge">{{ property.propertyType }}</span>
           </div>
           <div class="property-info">
